@@ -1,0 +1,347 @@
+name: Towny
+version: 0.01
+language: english
+author: ElgarL
+website:
+description: >
+    Language file for all game messages.
+    Alternate language files can be enabled by altering the
+    [language] entry in config.yml
+    
+#
+#
+#  You MUST retain spacing in the texts.
+#  If a text begins with a space, it must remain that way.
+# If it ends with a space, it must remain that way.
+#
+#
+
+############################################################
+# +------------------------------------------------------+ #
+# | Towny chat   | #
+# +------------------------------------------------------+ #
+############################################################
+
+# prefix and postfix modifications made when using town/nation chat
+
+default_capital_postfix: ' City'
+default_capital_prefix: 'Capital: '
+
+default_king_postfix: ''
+default_king_prefix: 'King '
+
+default_mayor_postfix: ''
+default_mayor_prefix: 'Mayor '
+
+default_nation_postfix: ' Nation'
+default_nation_prefix: ''
+
+default_town_postfix: ' Town'
+default_town_prefix: ''
+
+default_towny_prefix: '&6[Towny] &b'
+
+############################################################
+# +------------------------------------------------------+ #
+# |help messages | #
+# +------------------------------------------------------+ #
+############################################################
+
+
+help_0: 'General Towny Help'
+help_1: 'Try the following commands to learn more about towny.'
+help_2: 'Town Chat'
+help_3: 'Nation Chat'
+
+town_help_1: 'Your town''s status'
+town_help_2: '[mayor]'
+town_help_3: 'Selected town''s status'
+town_help_4: 'Shortcut to the town''s status of your location.'
+town_help_5: 'Teleport to town''s spawn.'
+town_help_6: 'New town with you as mayor.'
+town_help_7: 'New town with target mayor.'
+town_help_8: 'List commands for mayors.'
+town_help_9: 'Today''s the day!'
+
+mayor_help_2: 'Claim this town block'
+mayor_help_3: 'Claim area not attached to town'
+mayor_help_4: 'Claim around you to a radius of X'
+mayor_help_5: 'Claim to the maximum radius'
+mayor_help_6: 'Unclaim this town block'
+mayor_help_7: 'Attempt to unclaim around you.'
+mayor_help_8: 'Attempt to unclaim all townblocks.'
+
+nation_help_1: 'Your nation''s status'
+nation_help_2: '[nation]'
+nation_help_3: 'Target nation''s status'
+nation_help_4: 'List all nations'
+nation_help_5: 'Leave your nation'
+nation_help_6: 'Create a new nation'
+nation_help_7: 'List the king commands'
+nation_help_8: 'Create a new nation'
+
+king_help_1: 'Nation King Help'
+king_help_2: 'Set your alliance.'
+king_help_3: 'Set your enemies.'
+
+res_1: 'Your status'
+res_2: '[resident]'
+res_3: 'Target player''s status'
+res_4: 'List all active players'
+res_5: 'for help'
+res_6: 'Online match'
+res_7: 'Exact name'
+
+mode_1: 'Show the map between each townblock'
+mode_2: 'Attempt to claim as you walk'
+mode_3: 'Attempt to unclaim as you walk'
+
+plot_perms: 'Use %s instead of %s for plot permissions.'
+plot_perms_1: 'Resident plots don''t make use of outsider permissions.'
+
+res_list: 'Residents'
+res_sing: 'Resident'
+mayor_sing: 'Mayor'
+admin_sing: 'Admin'
+nation_sing: 'Nation'
+nation_plu: 'Nations'
+king_sing: 'King'
+town_plu: 'Towns'
+world_plu: 'Worlds'
+world_sing: 'World'
+
+world_help_1: 'Current world''s status'
+world_help_2: '[world]'
+world_help_3: 'Target worlds''s status'
+world_help_4: 'List all worlds'
+
+townyadmin_help_1: 'Unclaim this town block'
+townyadmin_help_2: 'Attempt to unclaim around you.'
+
+ta_panel_1: 'Towny Admin Panel'
+ta_panel_2: 'WarTime: '
+ta_panel_3: 'Health Regen: '
+ta_panel_4: 'Mob Removal: '
+ta_panel_5: 'Daily: '
+ta_panel_6: 'Economy: '
+ta_panel_7: 'Bank Accounts: '
+ta_panel_8: 'Server'
+ta_panel_9: 'Memory: '
+ta_panel_10: 'Threads: '
+ta_panel_11: 'Time: '
+
+admin_panel_1: 'Admin panel'
+admin_panel_2: 'reload Towny'
+admin_panel_3: 'Run the new day code'
+
+############################################################
+# +------------------------------------------------------+ #
+# |   Messages   | #
+# +------------------------------------------------------+ #
+############################################################
+
+
+# %s = data to be supplied by the plugin.
+
+unclaimed_plot_name: 'Unowned'
+unclaimed_zone_name: 'Wilderness'
+
+for_sale: '[For Sale: %s]'
+
+msg_buy_resident_plot: '&b%s bought %s''s plot!'
+msg_couldnt_pay_taxes: '&b%s couldn''t pay taxes and was kicked from the %s.'
+msg_couldnt_pay_plot_taxes: '&b%s couldn''t pay taxes and lost ownership over a plot.'
+msg_payed_town_tax: '&bPayed town tax of '
+msg_payed_plot_cost: '&bPayed %s for %s plots in %s'
+msg_payed_resident_tax: '&bPayed resident tax of '
+msg_bankrupt_town: ' couldn''t afford to remain a town.'
+msg_bankrupt_nation: ' couldn''t afford to remain a nation.'
+msg_nation_not_neutral: '&bNation couldn''t afford it''s neutral state.'
+msg_nation_cant_neutral: '&bNation couldn''t afford to become a neutral nation.'
+msg_nation_set_neutral: '&bSuccessfully changed nation''s neutrality.'
+msg_nation_neutral: '&bYour nation is now'
+msg_tax_exempt: '&bTown staff are exempt from taxes.'
+msg_del_nation: '&bThe nation %s was disbanded!'
+msg_del_resident: '&b%s lost all his Towny data!'
+msg_del_town: '&bThe town of %s fell into ruin!'
+msg_join_nation: '&bThe town of %s joined the nation!'
+msg_join_town: '&b%s joined the town!'
+msg_friend_add: '&b%s added you as a friend.'
+msg_friend_remove: '&b%s removed you as a friend.'
+msg_removed: '&bRemoved '
+msg_from_list: 'from your friend list.'
+msg_left_town: '&b%s  left town'
+msg_you_left: '&bYou left %s.'
+msg_not_mayor: '&bYou are not the mayor.'
+msg_not_king: '&bYou are not the king.'
+msg_not_mayor_ass: '&bYou are not the mayor or an assistant.'
+msg_not_king_ass: '&bYou are not the king or an assistant.'
+msg_no_perms_claim: '&bYou do not have permission to expand your town.'
+msg_outpost_disable: '&bOutposts are not available.'
+msg_kicked_by: '&bYou were kicked from town by %s.'
+msg_kicked: '&b%s kicked %s from town.'
+msg_nation_kicked_by: '&bYour town was kicked from the nation by %s.'
+msg_town_left_nation: '&bYour town left the nation of %s.'
+msg_nation_town_left: '&bThe town of %s left your nation.'
+msg_nation_kicked: '&b%s kicked %s from the nation.'
+msg_raised_ass: '&b%s raised %s to %s assistants.'
+msg_lowered_to_res_by: '&bYou were lowered to a regular resident by %s.'
+msg_lowered_to_res: '%&bs removed %s to regular resident.'
+msg_invalid_name: '&bNone of those names were valid.'
+msg_invited_join_town: '&b%s invited %sto town.'
+msg_invited_join_nation: '&b%s invited %sto the nation.'
+msg_deny_invite: '&b%s denied your invite.'
+msg_invited: '&bYou''ve been invited to join %s.'
+
+msg_allied_nations: '&b%s allied with the nations %s.'
+msg_broke_alliance: '&b%s broke their alliance with the nations %s.'
+
+msg_enemy_nations: '&b%s developed a hatred for the nations %s.'
+msg_enemy_to_neutral: '&b%s has changed it''s status to neutral towards %s.'
+
+msg_added_ally: '&b%s allied with your nation.'
+msg_removed_ally: '&b%s canceled the alliance with your nation.'
+
+msg_added_enemy: '&b%s has developed a hatred towards your nation.'
+msg_removed_enemy: '&b%s has become peaceful towards your nation.'
+
+msg_block_claim: 'Claim this town block'
+msg_plot_nfs: 'Take down a plot for sale'
+msg_nfs_abr: '''nfs'' is an accepted abreviation for ''notforsale''.'
+msg_plot_fs: 'Put this area up for auction.'
+msg_claimed: '&bSuccessfully claimed'
+msg_unclaimed: '&bSuccessfully unclaimed'
+msg_not_claimable: '&bThis world is not claimable.'
+msg_err_rect_auto: '&bOnly towns can use auto.'
+msg_err_invalid_radius: '&bInvalid radius. Use an integer or ''auto''.'
+msg_abandoned_area: '&bAbandoned area %s'
+msg_admin_unclaim_area: '&bForcefully unclaimed area  %s'
+msg_abandoned_area_1: '&bYour town abadoned the area'
+msg_not_town: '&bSelected area is not part of your town.'
+msg_no_money_purchase_plot: '&bYou don''t have enough money to purchase this plot.'
+msg_town_no_money_purchase_plot: '&bThe town doesn''t have enough money to purchase back this plot.'
+msg_no_funds_new_town: '&b%s can''t afford to settle a new town here.'
+msg_no_funds_claim: '&bTown cannot afford to claim %s  town blocks costing %s. Add more money into the town bank.'
+msg_annexed_area: '&bAnnexed area %s'
+msg_max_plot_own: '&bYou cannot own more than %s plots.'
+msg_no_funds_new_nation: '&bThe town can''t afford to start a new nation.'
+msg_already_claimed: '&bThis area has already been claimed by: %s'
+msg_already_claimed_1: '&bThis area (%s) already belongs to someone.'
+msg_already_claimed_2: '&bThis area has already been claimed.'
+msg_too_close: '&bThis area is too close to another town.'
+msg_not_claimed: '&bThis area (%s) hasn''t been claimed.'
+msg_not_claimed_1: '&bThis area had not been claimed.'
+msg_err_plot_nfs: '&bThis plot is not for sale.'
+msg_err_not_part_town: '&bSelected area is not part of your town.'
+msg_err_not_attached_edge: '&bSelected area not attached to edge.'
+msg_err_not_enough_blocks: '&bNot enough available town blocks to claim this selection.'
+msg_err_cant_afford_blocks: '&bTown cannot afford to claim %s town blocks costing %s'
+msg_err_not_in_town_claim: '&bYou must belong to a town in order to claim plots.'
+msg_err_must_belong_town: '&bYou must belong to a town.'
+msg_err_dont_belong_town: '&bYou don''t belong to a town.'
+msg_err_dont_belong_nation: '&bYou don''t belong to a nation.'
+msg_not_own_area: '&bYou do not own the selected area.'
+msg_not_own_place: '&bThis place is not owned by anyone.'
+msg_area_not_own: '&bThis area does not belong to you.'
+msg_area_not_recog: '&bThis area isn''t recognized by Towny.'
+msg_specify_name: '&bSpecify town name'
+msg_specify_nation_name: '&bSpecify nation name'
+msg_peasant_right: '&bA peasant hasn''t the right to force his leaders into the throne.'
+msg_err_town_spawn_forbidden: '&bTown spawn travel is forbidden.'
+msg_err_cant_afford_tp: '&bCannot afford to teleport to your town''s spawn.'
+msg_cost_spawn: '&bYou were charged %s to teleport to the town''s spawn.'
+msg_err_cant_afford_tp_town: '&bCannot afford to teleport to %s.'
+msg_err_not_public: '&bThat town is not public.'
+msg_town_rename_disabled: '&bTown Renaming Disabled'
+
+msg_set_town_home: '&bSuccessfully changed town''s home block to %s'
+msg_set_town_spawn: '&bSuccessfully changed town''s spawn.'
+msg_set_town_pvp: '&bSuccessfully changed town''s pvp setting.'
+msg_set_town_public: '&bSuccessfully set town Public: %s'
+msg_set_town_expl: '&bSuccessfully set town Explosions: %s'
+msg_set_perms: '&bSuccessfully changed permissions to %s.'
+
+msg_set_claim: '&bSuccessfully changed %s''s claimability to %s'
+msg_set_pvp: '&bSuccessfully changed %s''s PvP to %s'
+msg_usedefault: '&bThis world (%s) is now using the global default settings.'
+msg_set_wild_perms: '&bSuccessfully changed %s''s wild permissions %s'
+msg_set_wild_ignore: '&bSuccessfully changed %s''s wild ignore blocks to %s'
+msg_set_wild_name: '&bSuccessfully changed %s''s wild name to %s'
+msg_set_use_towny_on: '&bThis world now follows towny rules.'
+msg_set_use_towny_off: '&bThis world is exempt of all towny interactions.'
+
+msg_town_set_name: '&b%s renamed town to %s.'
+msg_nation_set_name: '&b%s renamed nation to %s.'
+
+msg_world_pvp: '&bThis world is PvP only.'
+
+msg_error_must_be_int: '&bAmount must be an integer.'
+msg_must_specify_amnt: '&bMust specify amount. Eg: %s withdraw 54'
+msg_town_set_tax: '&b%s has set the daily resident tax at %s'
+msg_town_set_plottax: '&b%s has set the daily tax of plots at %s'
+msg_town_set_plotprice: '&b%s has set the price of plots at %s'
+msg_town_set_nation_tax: '&b%s has set the nation tax at %s'
+
+msg_mayor_abandon: '&bYou would abandon your people? Choose another mayor with ''/town set mayor'' if your sure.'
+msg_new_day_tax: '&bA new day is here! Taxes and rent have been collected'
+msg_new_day: '&bA new day is here!'
+msg_new_king: '&b%s is now the king!'
+msg_new_mayor: '&b%s is now the mayor!'
+msg_new_nation: '&b%s created a new nation called %s'
+msg_new_town: '&b%s created a new town called %s'
+msg_plot_for_sale: '&b%s put the plot (%s) up for sale!'
+msg_registration: 'Welcome %s to the server!'
+msg_registration_old: 'Welcome this is your first login.@You''ve successfully been registered!@Try the /towny command for more help.'
+msg_war_eliminated: '&6[War] &b%s was eliminated from the war.'
+msg_war_forfeited: '&6[War] &b%s forfeited.'
+msg_war_join: '&6[War] &b%s joined the fight!'
+msg_war_lose_block: '(%s) belonging to %s has fallen.'
+msg_war_score: '&6[War] &b%s scored %d points!'
+msg_war_cannot_do: 'You cannot do this when the world is at war.'
+msg_war_in_progress: 'War already in progress.'
+msg_war_started: 'Started the war countdown.'
+msg_war_ended: 'Ended the current war.'
+
+# these messages are only used if town/nation creation is set to admins only
+
+msg_admin_only_create_nation: '&bOnly admins are allowed to create nations.'
+msg_admin_only_create_town: '&bOnly admins are allowed to create towns.'
+
+msg_cache_block_error: '&bYou have not been registered with Towny. Try relogging.'
+msg_cache_block_error_wild: '&bNot allowed to %s in the wild.'
+msg_cache_block_error_plot_friend: '&bOwner doesn''t allow allies to %s here.'
+msg_cache_block_error_plot_allies: '&bOwner doesn''t allow allies to %s here.'
+msg_cache_block_error_plot_outsider: '&bOwner doesn''t allow outsiders to %s here.'
+msg_cache_block_error_town_resident: '&bResidents aren''t allowed to %s here.'
+msg_cache_block_error_town_allies: '&bAllies aren''t allowed to %s.'
+msg_cache_block_error_town_outsider: '&bOutsiders aren''t allowed to %s.'
+
+msg_err_not_configured: '&bThis world has not been configured by Towny.'
+msg_err_updating_item_perms: '&bError updating item use permissions cache.'
+msg_err_updating_switch_perms: '&bError updating switch permissions cache.'
+msg_err_updating_destroy_perms: '&bError updating destroy permissions cache.'
+msg_err_updating_build_perms: '&bError updating build permissions cache.'
+msg_err_admin_only: '&bOnly an admin can use this command.'
+msg_err_admin_only_delete: '&bOnly an admin can delete other resident data.'
+msg_err_admin_only_delete_town: '&bOnly an admin can delete other town data.'
+msg_err_admin_only_delete_nation: '&bOnly an admin can delete other nation data.'
+msg_err_not_registered: '&bYou are not registered'
+msg_err_not_registered_1: '&b%s is not registered'
+msg_err_invalid_name: '&b%s is an invalid name.'
+msg_err_already_res: '&b%s already belongs to a town.'
+msg_err_already_nation: '&bTarget town already belongs to a nation.'
+msg_err_invalid_property: '&bInvalid %s property.'
+msg_err_not_supported: '&bNot yet supported.'
+msg_err_invalid_input: '&bInvalid input. Use %s'
+msg_err_invalid_choice: '&bInvalid choice'
+msg_err_invalid_sub: '&bInvalid sub command.'
+msg_err_universe_limit: '&bThe universe cannot hold any more towns.'
+msg_err_too_many_npc: '&bToo many npc''s registered.'
+msg_reloaded: '&bTowny''s settings were reloaded.'
+msg_give_total: '&bGave %s bonus. (Total: %s)'
+mag_backup_success: '&bBackup successful.'
+
+msg_err_negative_money: '&bNegative money is stupid. Weirdo.'
+msg_xx_withdrew_xx: '&b%s withdrew %s from the %s bank.'
+msg_xx_deposited_xx: '&b%s deposited %s into the %s bank.'
+msg_insuf_funds: '&bYou don''t have that much.'
