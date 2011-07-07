@@ -575,7 +575,7 @@ public class Towny extends JavaPlugin {
 					return TownBlockStatus.PLOT_OWNER;
 				else if (owner.hasFriend(resident))
 					return TownBlockStatus.PLOT_FRIEND;
-				else if (resident.hasTown() && townyUniverse.isAlly(resident.getTown(), owner.getTown()))
+				else if (resident.hasTown() && townyUniverse.isAlly(owner.getTown(), resident.getTown()))
 					return TownBlockStatus.PLOT_ALLY;
 				else
 					// Exit out and use town permissions
@@ -590,7 +590,7 @@ public class Towny extends JavaPlugin {
 
 			if (resident.getTown() != town) {
 				// Allied destroy rights
-				if (universe.isAlly(resident.getTown(), town))
+				if (universe.isAlly(town, resident.getTown()))
 					return TownBlockStatus.TOWN_ALLY;
 				else
 					return TownBlockStatus.OUTSIDER;
@@ -696,21 +696,21 @@ public class Towny extends JavaPlugin {
 				if (owner.getPermissions().getResident(actionType))
 					return true;
 				else {
-					cacheBlockErrMsg(player, String.format(TownySettings.getLangString("msg_cache_block_error_plot_friend"), actionType.toString()));
+					cacheBlockErrMsg(player, String.format(TownySettings.getLangString("msg_cache_block_error_plot"), "friends", actionType.toString()));
 					return false;
 				}
 			} else if (status == TownBlockStatus.PLOT_ALLY)
 				if (owner.getPermissions().getAlly(actionType))
 					return true;
 				else {
-					cacheBlockErrMsg(player, String.format(TownySettings.getLangString("msg_cache_block_error_plot_allies"), actionType.toString()));
+					cacheBlockErrMsg(player, String.format(TownySettings.getLangString("msg_cache_block_error_plot"), "allies", actionType.toString()));
 					return false;
 				}
 			else //TODO: (Remove) if (status == TownBlockStatus.OUTSIDER)
 				if (owner.getPermissions().getOutsider(actionType))
 					return true;
 				else {
-					cacheBlockErrMsg(player, String.format(TownySettings.getLangString("msg_cache_block_error_plot_outsider"), actionType.toString()));
+					cacheBlockErrMsg(player, String.format(TownySettings.getLangString("msg_cache_block_error_plot"), "outsiders", actionType.toString()));
 					return false;
 				}
 		} catch (NotRegisteredException x) {

@@ -380,6 +380,8 @@ public class NationCommand implements CommandExecutor  {
 
 			for (Town town : invited)
 				msg += town.getName() + ", ";
+					
+			msg = msg.substring(0, msg.length()-2);
 			msg = String.format(TownySettings.getLangString("msg_invited_join_nation"), player.getName(), msg);
 			plugin.getTownyUniverse().sendNationMessage(nation, ChatTools.color(msg));
 			plugin.getTownyUniverse().getDataSource().saveNation(nation);
@@ -458,8 +460,11 @@ public class NationCommand implements CommandExecutor  {
 			
 			for (Town town : kicking) {
 				msg += town.getName() + ", ";
+				
+				msg = msg.substring(0, msg.length()-2);
 				plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_nation_kicked_by"), player.getName()));
 			}
+			msg = msg.substring(0, msg.length()-2);
 			msg = String.format(TownySettings.getLangString("msg_nation_kicked"), player.getName(), msg);
 			plugin.getTownyUniverse().sendNationMessage(nation, ChatTools.color(msg));
 			plugin.getTownyUniverse().getDataSource().saveNation(nation);
@@ -529,6 +534,8 @@ public class NationCommand implements CommandExecutor  {
 			
 			for (Resident newMember : invited)
 				msg += newMember.getName() + ", ";
+					
+			msg = msg.substring(0, msg.length()-2);
 			msg = String.format(TownySettings.getLangString("msg_raised_ass"), player.getName(), msg, "nation");
 			plugin.getTownyUniverse().sendNationMessage(nation, ChatTools.color(msg));
 			plugin.getTownyUniverse().getDataSource().saveNation(nation);
@@ -586,6 +593,7 @@ public class NationCommand implements CommandExecutor  {
 					p.sendMessage(String.format(TownySettings.getLangString("msg_lowered_to_res_by"), player.getName()));
 				*/
 			}
+			msg = msg.substring(0, msg.length()-2);
 			msg = String.format(TownySettings.getLangString("msg_lowered_to_res"), player.getName(), msg);
 			plugin.getTownyUniverse().sendNationMessage(nation, ChatTools.color(msg));
 			plugin.getTownyUniverse().getDataSource().saveNation(nation);

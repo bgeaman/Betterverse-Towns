@@ -406,7 +406,7 @@ public class TownCommand implements CommandExecutor  {
 							throw new Exception(TownySettings.getLangString("msg_world_pvp"));
 						}
 						town.setPVP(parseOnOff(split[1]));
-						plugin.sendMsg(player, TownySettings.getLangString("msg_set_town_pvp"));
+						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_pvp"), town.isPVP() ? "Enabled" : "Disabled"));
 						// TODO: send message to all with town
 					} catch (Exception e) {
 						plugin.sendErrorMsg(player, e.getMessage());
@@ -642,6 +642,8 @@ public class TownCommand implements CommandExecutor  {
 			String msg = "";
 			for (Resident newMember : invited)
 				msg += newMember.getName() + ", ";
+			
+			msg = msg.substring(0, msg.length()-2);
 
 			msg = String.format(TownySettings.getLangString("msg_invited_join_town"), player.getName(), msg);
 			plugin.getTownyUniverse().sendTownMessage(town, ChatTools.color(msg));
@@ -712,6 +714,7 @@ public class TownCommand implements CommandExecutor  {
 				if (p != null)
 					p.sendMessage(String.format(TownySettings.getLangString("msg_kicked_by"), player.getName()));
 			}
+			msg = msg.substring(0, msg.length()-2);
 			msg = String.format(TownySettings.getLangString("msg_kicked"), player.getName(), msg);
 			plugin.getTownyUniverse().sendTownMessage(town, ChatTools.color(msg));
 			plugin.getTownyUniverse().getDataSource().saveTown(town);
@@ -797,7 +800,9 @@ public class TownCommand implements CommandExecutor  {
 
 	public void townAssistantsRemove(Player player, Resident resident, Town town, List<Resident> kicking) {
 		ArrayList<Resident> remove = new ArrayList<Resident>();
-		for (Resident member : kicking)
+		List<Resident> toKick = new ArrayList<Resident>(kicking);
+		
+		for (Resident member : toKick)
 			try {
 				town.removeAssistant(member);
 				plugin.deleteCache(member.getName());
@@ -805,18 +810,23 @@ public class TownCommand implements CommandExecutor  {
 			} catch (NotRegisteredException e) {
 				remove.add(member);
 			}
-		for (Resident member : remove)
-			kicking.remove(member);
-
-		if (kicking.size() > 0) {
+		
+		// remove invalid names so we don't try to send them messages			
+				if (remove.size() > 0)
+					for (Resident member : remove)
+						toKick.remove(member);
+							
+		if (toKick.size() > 0) {
 			String msg = "";
-
-			for (Resident member : kicking) {
+			Player p;
+			
+			for (Resident member : toKick) {
 				msg += member.getName() + ", ";
-				Player p = plugin.getServer().getPlayer(member.getName());
+				p = plugin.getServer().getPlayer(member.getName());
 				if (p != null)
 					p.sendMessage(String.format(TownySettings.getLangString("msg_lowered_to_res_by"), player.getName()));
 			}
+			msg = msg.substring(0, msg.length()-2);
 			msg = String.format(TownySettings.getLangString("msg_lowered_to_res"), player.getName(), msg);
 			plugin.getTownyUniverse().sendTownMessage(town, ChatTools.color(msg));
 			plugin.getTownyUniverse().getDataSource().saveTown(town);
@@ -855,7 +865,13 @@ public class TownCommand implements CommandExecutor  {
 		plugin.updateCache();
 	}
 	
+	// wrapper function for non friend setting of perms
 	public static void setTownBlockOwnerPermissions(Player player, TownBlockOwner townBlockOwner, String[] split) {
+		
+		setTownBlockOwnerPermissions(player, townBlockOwner, split, false);
+		
+	}
+	public static void setTownBlockOwnerPermissions(Player player, TownBlockOwner townBlockOwner, String[] split, boolean friend) {
 		
 		// TODO: switches
 		if (split.length == 0 || split[0].equalsIgnoreCase("?")) {
@@ -871,10 +887,10 @@ public class TownCommand implements CommandExecutor  {
 			player.sendMessage(TownySettings.getLangString("plot_perms_1"));
 		} else {
 			TownyPermission perm = townBlockOwner.getPermissions();
-			String arg0 = split[0];	
 			
-			if (arg0.equalsIgnoreCase("friend"))
-				arg0 = "resident";
+			// reset the friend to resident so the perm settings don't fail
+			if (friend && split[0].equalsIgnoreCase("friend"))
+				split[0] = "resident";
 			
 			if (split.length == 1)
 				try {
@@ -922,15 +938,13 @@ public class TownCommand implements CommandExecutor  {
 				try {
 					boolean b = parseOnOff(split[2]);
 					String s = "";
-					if ((arg0.equalsIgnoreCase("resident") || arg0.equalsIgnoreCase("outsider") || arg0.equalsIgnoreCase("ally"))
-							&& (split[1].equalsIgnoreCase("build") || split[1].equalsIgnoreCase("destroy") || split[1].equalsIgnoreCase("switch") || split[1].equalsIgnoreCase("itemuse")))
-						s = arg0 + split[1];
+					s = split[0] + split[1];
 					perm.set(s, b);
 				} catch (Exception e) {
 				}
 			String perms = townBlockOwner.getPermissions().toString();
 			//change perm name to friend is this is a resident setting
-			if (split[0].equalsIgnoreCase("friend"))
+			if (friend)
 				perms = perms.replaceAll("resident", "friend");
 			plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_set_perms"), perms));
 			plugin.updateCache();

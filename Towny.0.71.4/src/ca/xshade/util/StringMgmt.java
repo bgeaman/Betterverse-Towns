@@ -10,12 +10,14 @@ import java.util.List;
  */
 
 public class StringMgmt {
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings("rawtypes")
 	public static String join(List arr) {
 		return join(arr, " ");
 	}
 	
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings("rawtypes")
 	public static String join(List arr, String separator) {
 		if (arr == null || arr.size() == 0)
 			return "";

@@ -286,3 +286,9 @@ v0.71.3:
 	- '/resident friends clearlist' now has a new alias of '/resident friends clear'. (old commands are still accepted)
 	- Added messages for costs when using ./town spawn'.
 	- The 'New Day' message no longer mentions taxes if you are not set to take taxes.
+v0.71.4:
+	- Fixed towny admin commands to only work for admins or from the console.
+	- Setting ally and outsider permissions at the resident level now correctly displays friend instead of resident.
+	- Fixed an error when removing assistants from both town and nation.
+	- Fixed Nation ally permissions to correctly test if you have perms for the area you want to perform the action in.
+	- Added Bonemeal, redstone repeaters, noteblock and jukebox to protected items to prevent outsider griefing.

@@ -401,7 +401,7 @@ public class TownyUniverse extends TownyObject {
 	public void sendTownMessage(Town town, String line) {
 		plugin.log("[Town Msg] " + town.getName() + ": " + line);
 		for (Player player : getOnlinePlayers(town))
-			player.sendMessage(line);
+			player.sendMessage(TownySettings.getLangString("default_towny_prefix") + line);
 	}
 	
 	public void sendNationMessage(Nation nation, String line) {

@@ -23,12 +23,14 @@ public class ChatTools {
 		return list(Arrays.asList(args), prefix);
 	}
 
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings("rawtypes")
 	public static List<String> list(List args) {
 		return list(args, "");
 	}
 	
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings("rawtypes")
 	public static List<String> list(List args, String prefix) {
 		if (args.size() > 0) {
 			String line = "";

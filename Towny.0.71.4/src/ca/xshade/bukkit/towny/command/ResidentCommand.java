@@ -140,7 +140,7 @@ public class ResidentCommand implements CommandExecutor  {
 			// TODO: Let admin's call a subfunction of this.
 			if (split[0].equalsIgnoreCase("perm")) {
 				String[] newSplit = StringMgmt.remFirstArg(split);
-				TownCommand.setTownBlockOwnerPermissions(player, resident, newSplit);
+				TownCommand.setTownBlockOwnerPermissions(player, resident, newSplit, true);
 			} else if (split[0].equalsIgnoreCase("mode")) {
 				String[] newSplit = StringMgmt.remFirstArg(split);
 				setMode(player, newSplit);
@@ -233,7 +233,8 @@ public class ResidentCommand implements CommandExecutor  {
 				if (p != null)
 					plugin.sendMsg(p, String.format(TownySettings.getLangString("msg_friend_add"), player.getName()));
 			}
-			msg += "to your friend list.";
+			msg = msg.substring(0, msg.length()-2);
+			msg += TownySettings.getLangString("msg_to_list");
 			plugin.sendMsg(player, msg);
 			plugin.getTownyUniverse().getDataSource().saveResident(resident);
 		} else
@@ -266,6 +267,7 @@ public class ResidentCommand implements CommandExecutor  {
 				if (p != null)
 					plugin.sendMsg(p, String.format(TownySettings.getLangString("msg_friend_remove"), player.getName()));
 			}
+			msg = msg.substring(0, msg.length()-2);
 			msg += TownySettings.getLangString("msg_from_list");;
 			plugin.sendMsg(player, msg);
 			plugin.getTownyUniverse().getDataSource().saveResident(resident);

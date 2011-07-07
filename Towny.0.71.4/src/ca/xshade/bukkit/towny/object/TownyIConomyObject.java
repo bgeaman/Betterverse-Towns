@@ -148,7 +148,6 @@ public class TownyIConomyObject extends TownyObject {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
 	public Account getIConomyAccount() throws IConomyException 
 	{
 		try 
@@ -204,14 +203,12 @@ public class TownyIConomyObject extends TownyObject {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
 	public static String getIConomyCurrency() 
 	{
 		return "";	
 	}
 	
 	/* Used To Get Balance of Players holdings in String format for printing*/
-	@SuppressWarnings("static-access")
 	public String getHoldingFormattedBalance() {
 		try {
 			return iConomy.format(getHoldingBalance());

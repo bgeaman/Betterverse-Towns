@@ -16,10 +16,10 @@ import ca.xshade.util.JavaUtil;
 
 public class MobRemovalTimerTask extends TownyTimerTask {
 	private Server server;
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static List<Class> mobsToRemove = new ArrayList<Class>();
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public MobRemovalTimerTask(TownyUniverse universe, Server server) {
 		super(universe);
 		this.server = server;
@@ -38,7 +38,8 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 			}
 	}
 	
-	@SuppressWarnings("unchecked")
+	
+	@SuppressWarnings("rawtypes")
 	public static boolean isRemovingEntity(LivingEntity livingEntity) {
 		for (Class c : mobsToRemove)
 			if (c.isInstance(livingEntity))
@@ -51,8 +52,8 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 	
 	@Override
 	public void run() {
-		int numRemoved = 0;
-		int livingEntities = 0;
+		//int numRemoved = 0;
+		//int livingEntities = 0;
 		
 		/* OLD METHOD
 		for (World world : server.getWorlds()) {
@@ -81,7 +82,7 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 		
 		for (World world : server.getWorlds()) {
 			List<LivingEntity> livingEntitiesToRemove = new ArrayList<LivingEntity>();
-			livingEntities += world.getLivingEntities().size();
+			//livingEntities += world.getLivingEntities().size();
 			for (LivingEntity livingEntity : world.getLivingEntities())
 				if (isRemovingEntity(livingEntity)) {
 					Coord coord = Coord.parseCoord(livingEntity.getLocation());
@@ -97,7 +98,7 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 				universe.getPlugin().sendDebugMsg("MobRemoval Removed: " + livingEntity.toString());
 				//livingEntity.teleportTo(new Location(world, livingEntity.getLocation().getX(), -50, livingEntity.getLocation().getZ()));
 				livingEntity.remove();
-				numRemoved++;
+				//numRemoved++;
 			}
 			//universe.getPlugin().sendDebugMsg(world.getName() + ": " + StringMgmt.join(worldLivingEntities));
 		}

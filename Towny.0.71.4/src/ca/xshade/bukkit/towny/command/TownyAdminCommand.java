@@ -63,7 +63,10 @@ public class TownyAdminCommand implements CommandExecutor  {
 		
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
-			parseTownyAdminCommand(player,args);
+			if (plugin.isTownyAdmin(player))
+				parseTownyAdminCommand(player,args);
+			else
+				sender.sendMessage(Colors.strip(TownySettings.getLangString("msg_err_admin_only")));
 		} else
 			// Console
 			if (args.length == 0)
