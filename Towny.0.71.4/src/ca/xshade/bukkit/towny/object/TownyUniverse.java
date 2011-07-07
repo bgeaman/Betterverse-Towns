@@ -395,7 +395,7 @@ public class TownyUniverse extends TownyObject {
 	public void sendResidentMessage(Resident resident, String line) throws TownyException {
 		plugin.log("[Resident Msg] " + resident.getName() + ": " + line);
 		Player player = getPlayer(resident);
-		player.sendMessage(line);
+		player.sendMessage(TownySettings.getLangString("default_towny_prefix") + line);
 	}
 
 	public void sendTownMessage(Town town, String line) {

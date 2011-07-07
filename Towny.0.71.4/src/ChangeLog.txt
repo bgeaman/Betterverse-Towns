@@ -292,3 +292,5 @@ v0.71.4:
 	- Fixed an error when removing assistants from both town and nation.
 	- Fixed Nation ally permissions to correctly test if you have perms for the area you want to perform the action in.
 	- Added Bonemeal, redstone repeaters, noteblock and jukebox to protected items to prevent outsider griefing.
+	- Moved chat prefix [Towny] to the language file (english.yml).
+	- All chat colouring is now configurable within the language file.
