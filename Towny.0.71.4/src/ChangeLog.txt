@@ -294,3 +294,6 @@ v0.71.4:
 	- Added Bonemeal, redstone repeaters, noteblock and jukebox to protected items to prevent outsider griefing.
 	- Moved chat prefix [Towny] to the language file (english.yml).
 	- All chat colouring is now configurable within the language file.
+	- disabled /tw wildperm, usedefault and wildignore if using permissions. Add permission nodes for these.
+	- Added a fix to prevent players firing from the wild into a PVP disabled town to attack.
+	- Added '/town set fire [on/off]' to prevent fire damage/spread in a town.

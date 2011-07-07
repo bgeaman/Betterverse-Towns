@@ -266,22 +266,24 @@ public class Towny extends JavaPlugin {
 	private void registerEvents() {
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, playerListener, Priority.Normal, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, playerListener, Priority.Normal, this);
-		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
+		//getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND_PREPROCESS, playerListener, Priority.Normal, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_MOVE, playerListener, Priority.Normal, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_TELEPORT, playerListener, Priority.Normal, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_CHAT, playerLowListener, Priority.Low, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_RESPAWN, playerListener, Priority.Normal, this);
 		getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
 
-		getServer().getPluginManager().registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Normal, this);
-		getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
+		getServer().getPluginManager().registerEvent(Event.Type.BLOCK_PLACE, blockListener, Priority.Lowest, this);
+		getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Lowest, this);
+		getServer().getPluginManager().registerEvent(Event.Type.BLOCK_IGNITE, blockListener, Priority.Lowest, this);
+		getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BURN, blockListener, Priority.Lowest, this);
 		//getServer().getPluginManager().registerEvent(Event.Type.BLOCK_INTERACT, blockListener, Priority.Normal, this);
 
-		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Normal, this);
-		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_EXPLODE, entityListener, Priority.Normal, this);
-		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, entityMonitorListener, Priority.Monitor, this);
-		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Normal, this);
-		getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Normal, this);
+		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, entityListener, Priority.Lowest, this);
+		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_EXPLODE, entityListener, Priority.Lowest, this);
+		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DAMAGE, entityMonitorListener, Priority.Lowest, this);
+		getServer().getPluginManager().registerEvent(Event.Type.ENTITY_DEATH, entityListener, Priority.Lowest, this);
+		getServer().getPluginManager().registerEvent(Event.Type.CREATURE_SPAWN, entityListener, Priority.Lowest, this);
 		
 		getServer().getPluginManager().registerEvent(Event.Type.WORLD_LOAD, worldListener, Priority.Normal, this);
 	}
@@ -497,10 +499,15 @@ public class Towny extends JavaPlugin {
 		}
 		
 	}
+	
+	// is permissions active
+	public boolean isPermissions() {
+		return (TownySettings.isUsingPermissions() && permissions != null);
+	}
 
 	public boolean hasPermission(Player player, String node) {
 		sendDebugMsg("Perm Check: Does " + player.getName() + " have the node '" + node + "'?");
-		if (TownySettings.isUsingPermissions() && permissions != null) {
+		if (isPermissions()) {
 			sendDebugMsg("    Permissions installed.");
 			PermissionHandler handler = permissions.getHandler();
 			boolean perm = handler.permission(player, node);
@@ -780,5 +787,14 @@ public class Towny extends JavaPlugin {
 			if (option.getReaction() instanceof TownyQuestionTask)
 				((TownyQuestionTask)option.getReaction()).setTowny(this);
 		questioner.appendQuestion(question);
+	}
+	
+	public boolean parseOnOff(String s) throws Exception {
+		if (s.equalsIgnoreCase("on"))
+			return true;
+		else if (s.equalsIgnoreCase("off"))
+			return false;
+		else
+			throw new Exception(String.format(TownySettings.getLangString("msg_err_invalid_input"), " on/off."));
 	}
 }

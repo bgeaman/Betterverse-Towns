@@ -85,7 +85,7 @@ public class TownBlock {
 	public void setForSale(boolean isForSale) {
 		this.isForSale = isForSale;
 	}
-
+	
 	public boolean isForSale() {
 		return isForSale;
 	}

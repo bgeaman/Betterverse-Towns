@@ -461,7 +461,7 @@ public class TownySettings {
 	}
 	
 	public static String getNPCPrefix() {
-		// Not yet used
+		
 		return getString("NPC_PREFIX");
 	}
 	

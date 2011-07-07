@@ -98,7 +98,8 @@ public class TownyFormatter {
 		}
 		
 		// Permissions: B=rao D=--- S=ra-
-		out.add(Colors.Green + "Permissions: " + town.getPermissions().getColourString().replace("f", "r") + " Explosions: " + (town.isBANG() ? Colors.Red + "ON" : Colors.Green + "OFF") );
+		out.add(Colors.Green + "Permissions: " + town.getPermissions().getColourString().replace("f", "r") );
+		out.add(Colors.Green + "Explosions: " + (town.isBANG() ? Colors.Red + "ON" : Colors.LightGreen + "OFF") + Colors.Green + "  Firespread: " + (town.isFire() ? Colors.Red + "ON" : Colors.LightGreen + "OFF"));
 
 		// | Bank: 534 coins
 		String bankString = "";

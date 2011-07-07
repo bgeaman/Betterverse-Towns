@@ -1,20 +1,27 @@
 package ca.xshade.bukkit.towny.event;
 
+import java.util.List;
+
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import ca.xshade.bukkit.towny.NotRegisteredException;
 import ca.xshade.bukkit.towny.PlayerCache;
+import ca.xshade.bukkit.towny.TownyException;
 import ca.xshade.bukkit.towny.TownySettings;
 import ca.xshade.bukkit.towny.PlayerCache.TownBlockStatus;
 import ca.xshade.bukkit.towny.Towny;
 import ca.xshade.bukkit.towny.object.Coord;
+import ca.xshade.bukkit.towny.object.TownBlock;
 import ca.xshade.bukkit.towny.object.TownyPermission;
+import ca.xshade.bukkit.towny.object.TownyWorld;
 import ca.xshade.bukkit.towny.object.WorldCoord;
 
 
@@ -135,19 +142,50 @@ public class TownyBlockListener extends BlockListener {
 		}
 	}
 	
+	// prevent blocks igniting if within a protected town area when fire spread is set to off.
 	@Override
-	public void onBlockIgnite(BlockIgniteEvent event) {
+	public void onBlockBurn(BlockBurnEvent event) {
+		
 		if (event.isCancelled()) {
 			event.setCancelled(true);
 			return;
 		}
 		
-		long start = System.currentTimeMillis();
-
-		//onBlockIgnite(event, true, null);
-
-		plugin.sendDebugMsg("onBlockIgnite took " + (System.currentTimeMillis() - start) + "ms ("+event.getPlayer().getName()+", "+event.isCancelled() +")");
+		if (onBurn(event.getBlock()))
+			event.setCancelled(true);
 	}
+			
+	@Override
+	public void onBlockIgnite(BlockIgniteEvent event) {
+		
+		if (event.isCancelled()) {
+			event.setCancelled(true);
+			return;
+		}
+		
+		if (onBurn(event.getBlock()))
+			event.setCancelled(true);
+		
+	}
+	
+	private boolean onBurn(Block block) {
+
+		Location loc = block.getLocation();
+		Coord coord = Coord.parseCoord(loc);
+		
+		try {
+			TownyWorld townyWorld = plugin.getTownyUniverse().getWorld(loc.getWorld().getName());
+			TownBlock townBlock = townyWorld.getTownBlock(coord);
+			if (!townBlock.getTown().isFire() || plugin.getTownyUniverse().isWarTime()) {
+				plugin.sendDebugMsg("onBlockIgnite: Canceled " + block.getTypeId() + " from igniting within "+coord.toString()+".");
+				return true;
+			}
+		} catch (TownyException x) {
+		}	
+		
+		return false;
+	}
+	
 	/*
 	
 	public void onBlockInteractEvent(BlockInteractEvent event, boolean firstCall, String errMsg) {

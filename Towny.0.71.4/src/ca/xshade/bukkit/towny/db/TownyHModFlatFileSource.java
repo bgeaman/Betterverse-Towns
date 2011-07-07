@@ -242,6 +242,14 @@ public class TownyHModFlatFileSource extends TownyFlatFileSource {
 					} catch (NumberFormatException nfe) {
 					} catch (Exception e) {
 					}
+				
+				line = kvFile.get("fire");
+				if (line != null)
+					try {
+						town.setFire(Boolean.parseBoolean(line));
+					} catch (NumberFormatException nfe) {
+					} catch (Exception e) {
+					}
 
 			} catch (Exception e) {
 				System.out.println("[Towny] Loading Error: Exception while reading town file " + town.getName());

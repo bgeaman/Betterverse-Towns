@@ -48,10 +48,10 @@ commands:
 #    towny.town.claim : User is able to expand his town with /town claim
 #    towny.nation.new :User is able to create a nation
 #    towny.wild.*: User is able to build/destroy in wild regardless.
-#    towny.wild.build
-#    towny.wild.destroy
-#    towny.wild.switch
-#    towny.wild.item_use
+#        towny.wild.build
+#        towny.wild.destroy
+#        towny.wild.switch
+#        towny.wild.item_use
 #    towny.wild.block.[block id] : User is able to edit [block id] in the wild.
 #    towny.spawntp :Use /town spawn
 #    towny.publicspawntp : Use "/town spawn [town]" (teleport to other towns)

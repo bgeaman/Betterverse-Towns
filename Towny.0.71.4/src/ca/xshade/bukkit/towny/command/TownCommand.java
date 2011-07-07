@@ -292,6 +292,7 @@ public class TownCommand implements CommandExecutor  {
 			player.sendMessage(ChatTools.formatCommand("", "/town set", "name [name]", ""));
 			player.sendMessage(ChatTools.formatCommand("", "/town set", "public [on/off]", ""));
 			player.sendMessage(ChatTools.formatCommand("", "/town set", "explosion [on/off]", ""));
+			player.sendMessage(ChatTools.formatCommand("", "/town set", "fire [on/off]", ""));
 		} else {
 			Resident resident;
 			Town town;
@@ -405,9 +406,9 @@ public class TownCommand implements CommandExecutor  {
 							town.setPVP(true);
 							throw new Exception(TownySettings.getLangString("msg_world_pvp"));
 						}
-						town.setPVP(parseOnOff(split[1]));
+						town.setPVP(plugin.parseOnOff(split[1]));
 						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_pvp"), town.isPVP() ? "Enabled" : "Disabled"));
-						// TODO: send message to all with town
+						
 					} catch (Exception e) {
 						plugin.sendErrorMsg(player, e.getMessage());
 					}
@@ -416,9 +417,9 @@ public class TownCommand implements CommandExecutor  {
 					plugin.sendErrorMsg(player, "Eg: /town set public [on/off]");
 				else
 					try {
-						town.setPublic(parseOnOff(split[1]));
-						plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_set_town_public"), (town.isPublic() ? "on." : "off.")));
-						// TODO: send message to all with town
+						town.setPublic(plugin.parseOnOff(split[1]));
+						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_public"), town.isPublic() ? "Enabled" : "Disabled"));
+						
 					} catch (Exception e) {
 					}
 			} else if (split[0].equalsIgnoreCase("explosion")) {
@@ -426,9 +427,19 @@ public class TownCommand implements CommandExecutor  {
 					plugin.sendErrorMsg(player, "Eg: /town set explosion [on/off]");
 				else
 					try {
-						town.setBANG(parseOnOff(split[1]));
-						plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_set_town_expl"), (town.isBANG() ? "on." : "off.")));
-						// TODO: send message to all with town
+						town.setBANG(plugin.parseOnOff(split[1]));
+						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_expl"), town.isPVP() ? "Enabled" : "Disabled"));
+
+					} catch (Exception e) {
+					}
+			} else if (split[0].equalsIgnoreCase("fire")) {
+				if (split.length < 2)
+					plugin.sendErrorMsg(player, "Eg: /town set fire [on/off]");
+				else
+					try {
+						town.setFire(plugin.parseOnOff(split[1]));
+						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_fire"), town.isPVP() ? "Enabled" : "Disabled"));
+
 					} catch (Exception e) {
 					}
 			} else {
@@ -894,12 +905,12 @@ public class TownCommand implements CommandExecutor  {
 			
 			if (split.length == 1)
 				try {
-					perm.setAll(parseOnOff(split[0]));
+					perm.setAll(plugin.parseOnOff(split[0]));
 				} catch (Exception e) {
 				}
 			else if (split.length == 2)
 				try {
-					boolean b = parseOnOff(split[1]);
+					boolean b = plugin.parseOnOff(split[1]);
 					if (split[0].equalsIgnoreCase("resident") || split[0].equalsIgnoreCase("friend")) {
 						perm.residentBuild = b;
 						perm.residentDestroy = b;
@@ -936,7 +947,7 @@ public class TownCommand implements CommandExecutor  {
 				}
 			else if (split.length == 3)
 				try {
-					boolean b = parseOnOff(split[2]);
+					boolean b = plugin.parseOnOff(split[2]);
 					String s = "";
 					s = split[0] + split[1];
 					perm.set(s, b);
@@ -968,7 +979,7 @@ public class TownCommand implements CommandExecutor  {
 				if (plugin.getTownyUniverse().isWarTime())
 					throw new TownyException(TownySettings.getLangString("msg_war_cannot_do"));
 				
-				if (!plugin.isTownyAdmin(player) && TownySettings.isUsingPermissions() && !plugin.hasPermission(player, "towny.town.claim"))
+				if (!plugin.isTownyAdmin(player) && plugin.isPermissions() && !plugin.hasPermission(player, "towny.town.claim"))
 					throw new TownyException(TownySettings.getLangString("msg_no_perms_claim"));
 				
 				resident = plugin.getTownyUniverse().getResident(player.getName());
@@ -1266,13 +1277,5 @@ public class TownCommand implements CommandExecutor  {
 		}
 	}
 
-	public static boolean parseOnOff(String s) throws Exception {
-		if (s.equalsIgnoreCase("on"))
-			return true;
-		else if (s.equalsIgnoreCase("off"))
-			return false;
-		else
-			throw new Exception(String.format(TownySettings.getLangString("msg_err_invalid_input"), " on/off."));
-	}
 	
 }

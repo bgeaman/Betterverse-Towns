@@ -31,7 +31,12 @@ public class TownyWorldCommand implements CommandExecutor  {
 	private static final List<String> townyworld_help = new ArrayList<String>();
 	private static final List<String> townyworld_set = new ArrayList<String>();
 	
-	static {
+	public TownyWorldCommand(Towny instance) {
+		plugin = instance;
+	}		
+
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		
 		townyworld_help.add(ChatTools.formatTitle("/townyworld"));
 		townyworld_help.add(ChatTools.formatCommand("", "/townyworld", "", TownySettings.getLangString("world_help_1")));
 		townyworld_help.add(ChatTools.formatCommand("", "/townyworld", TownySettings.getLangString("world_help_2"), TownySettings.getLangString("world_help_3")));
@@ -41,26 +46,26 @@ public class TownyWorldCommand implements CommandExecutor  {
 		townyworld_set.add(ChatTools.formatTitle("/townyworld set"));
 		townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "claimable [on/off]", ""));
 		townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "pvp [on/off]", ""));
-		townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "usedefault", ""));
-		townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "wildperm [perm] .. [perm]", "build,destroy,switch,useitem"));
-		townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "wildignore [id] [id] [id]", ""));
 		townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "wildname [name]", ""));
 		townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "usingtowny [on/off]", ""));
-	}
-	
-	public TownyWorldCommand(Towny instance) {
-		plugin = instance;
-	}		
-
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		
+		// if using permissions and it's active disable this command
+		if (!plugin.isPermissions()) {
+			townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "usedefault", ""));
+			townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "wildperm [perm] .. [perm]", "build,destroy,switch,useitem"));
+			townyworld_set.add(ChatTools.formatCommand("", "/townyworld set", "wildignore [id] [id] [id]", ""));
+		}
 		
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
 			parseWorldCommand(player,args);
-		} else
+		} else {
 			// Console
 			for (String line : townyworld_help)
 				sender.sendMessage(Colors.strip(line));
+		}
+				
+		townyworld_help.clear();
 		return true;
 	}
 	
@@ -119,6 +124,7 @@ public class TownyWorldCommand implements CommandExecutor  {
 			}
 
 			if (split[0].equalsIgnoreCase("claimable")) {
+				
 				if (split.length < 2)
 					plugin.sendErrorMsg(player, "Eg: /townyworld set claimable on");
 				else
@@ -141,10 +147,24 @@ public class TownyWorldCommand implements CommandExecutor  {
 						plugin.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_invalid_input"), " on/off."));
 					}
 			} else if (split[0].equalsIgnoreCase("usedefault")) {
+				
+				// if using permissions and it's active disable this command
+				if (plugin.isPermissions()){
+					plugin.sendErrorMsg(player, "Command disabled: Using permissions.");
+					return;					
+				}
+				
 				world.setUsingDefault(true);
 				plugin.updateCache();
 				plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_usedefault"), world.getName()));
 			} else if (split[0].equalsIgnoreCase("wildperm")) {
+				
+				// if using permissions and it's active disable this command
+				if (plugin.isPermissions()){
+					plugin.sendErrorMsg(player, "Command disabled: Using permissions.");
+					return;					
+				}
+				
 				if (split.length < 2) {
 					// set default wildperm settings (/tw set wildperm)
 					world.setUsingDefault(true);
@@ -163,6 +183,13 @@ public class TownyWorldCommand implements CommandExecutor  {
 						plugin.sendErrorMsg(player, "Eg: /townyworld set wildperm build destroy");
 					}
 			} else if (split[0].equalsIgnoreCase("wildignore")) {
+				
+				// if using permissions and it's active disable this command
+				if (plugin.isPermissions()){
+					plugin.sendErrorMsg(player, "Command disabled: Using permissions.");
+					return;					
+				}
+				
 				if (split.length < 2)
 					plugin.sendErrorMsg(player, "Eg: /townyworld set wildignore 11,25,45,67");
 				else

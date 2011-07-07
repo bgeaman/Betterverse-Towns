@@ -25,7 +25,7 @@ public class Town extends TownBlockOwner implements Walled, ResidentList {
 	private Resident mayor;
 	private int bonusBlocks, taxes, plotPrice, plotTax;
 	private Nation nation;
-	private boolean isPVP, hasMobs, isPublic, isBANG;
+	private boolean isPVP, hasMobs, isPublic, isBANG, isFire;
 	private String townBoard = "/town set board [msg]";
 	private TownBlock homeBlock;
 	private TownyWorld world;
@@ -179,6 +179,14 @@ public class Town extends TownBlockOwner implements Walled, ResidentList {
 
 	public boolean isBANG() {
 		return isBANG;
+	}
+	
+	public void setFire(boolean isFire) {
+		this.isFire = isFire;
+	}
+
+	public boolean isFire() {
+		return isFire;
 	}
 
 	public void setTownBoard(String townBoard) {

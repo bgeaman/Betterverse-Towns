@@ -10,6 +10,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageByProjectileEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityListener;
@@ -39,13 +40,28 @@ public class TownyEntityListener extends EntityListener {
 		if (event.isCancelled())
 			return;
 		
-		if (event instanceof EntityDamageByEntityEvent) {
-			long start = System.currentTimeMillis();
-			
-			EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent)event;
-			Entity attacker = entityEvent.getDamager();
-			Entity defender = entityEvent.getEntity();
+		long start = System.currentTimeMillis();
+		
+		Entity attacker = null;
+		Entity defender = null;
 
+		
+		if (event instanceof EntityDamageByProjectileEvent) {
+			plugin.sendMsg("EntityDamageByProjectileEvent");
+			EntityDamageByProjectileEvent entityEvent = (EntityDamageByProjectileEvent)event;
+			attacker = (entityEvent.getProjectile()).getShooter();
+			defender = entityEvent.getEntity();
+			
+		} else if (event instanceof EntityDamageByEntityEvent) {
+			plugin.sendMsg("EntityDamageByEntityEvent");
+			EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent)event;
+			attacker = entityEvent.getDamager();
+			defender = entityEvent.getEntity();
+		}
+				
+		if (attacker != null) {	
+			plugin.sendMsg("Attacker not null");
+			
 			TownyUniverse universe = plugin.getTownyUniverse();
 			try {
 				TownyWorld world = universe.getWorld(defender.getWorld().getName());
@@ -114,7 +130,7 @@ public class TownyEntityListener extends EntityListener {
 		
 		try {
 			// Check Town PvP status
-			Coord key = Coord.parseCoord(a);
+			Coord key = Coord.parseCoord(b);
 			TownBlock townblock = world.getTownBlock(key);
 			//plugin.sendDebugMsg("is townblock");
 			if (!townblock.getTown().isPVP())
