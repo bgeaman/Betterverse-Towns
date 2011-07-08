@@ -17,7 +17,7 @@ description: >
 
 commands:
     towny:
-        aliases: [tester]
+        aliases: []
     nation:
         aliases: [n, nat]
     nationchat:
@@ -221,8 +221,8 @@ protection:
     # 326 - water bucket
     # 327 - lava bucket
     # 351 - bone/bonemeal
-    # 93/94/356 - redstone repeater
-    item_use_ids: 259,325,326,327,351,93,94,356
+    # 93/94 - redstone repeater
+    item_use_ids: 259,325,326,327,351
 
     # Items which can be blocked or enabled via town/plot flags
     # 64 - wooden door
@@ -234,7 +234,7 @@ protection:
     # 96 - trap door
     # 25 - noteblock
     # 84 - jukebox
-    switch_ids: 64,69,70,71,72,77,96,25,84
+    switch_ids: 64,69,70,71,72,77,96,25,84,93,94
 
     # Remove living entities within a town's boundaries.
     mob_removal: false
