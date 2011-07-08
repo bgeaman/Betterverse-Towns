@@ -282,6 +282,10 @@ public class TownyUniverse extends TownyObject {
 
 		String oldName = town.getName();
 		towns.put(newName.toLowerCase(), town);
+		//Tidy up old files
+		// Has to be done here else the town no longer exists and the move command may fail.
+		getDataSource().deleteTown(town);
+		
 		towns.remove(oldName.toLowerCase());
 		town.setName(newName);
 		Town oldTown = new Town(oldName);
@@ -292,8 +296,7 @@ public class TownyUniverse extends TownyObject {
 		}
 		getDataSource().saveTown(town);
 		getDataSource().saveTownList();
-		//Tidy up old files
-		getDataSource().deleteTown(oldTown);
+		
 	}
 	
 	public void renameNation(Nation nation, String newName) throws AlreadyRegisteredException {
@@ -304,6 +307,9 @@ public class TownyUniverse extends TownyObject {
 
 		String oldName = nation.getName();
 		nations.put(newName.toLowerCase(), nation);
+		//Tidy up old files
+		getDataSource().deleteNation(nation);
+				
 		nations.remove(oldName.toLowerCase());
 		nation.setName(newName);
 		Nation oldNation = new Nation(oldName);
@@ -314,8 +320,7 @@ public class TownyUniverse extends TownyObject {
 		}
 		getDataSource().saveNation(nation);
 		getDataSource().saveNationList();
-		//Tidy up old files
-		getDataSource().deleteNation(oldNation);
+		
 	}
 
 	public Resident getResident(String name) throws NotRegisteredException {
