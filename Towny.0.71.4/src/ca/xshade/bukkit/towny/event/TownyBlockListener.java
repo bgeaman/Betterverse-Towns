@@ -1,7 +1,5 @@
 package ca.xshade.bukkit.towny.event;
 
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

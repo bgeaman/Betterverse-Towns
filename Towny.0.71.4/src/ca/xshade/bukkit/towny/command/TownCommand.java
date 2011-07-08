@@ -428,7 +428,7 @@ public class TownCommand implements CommandExecutor  {
 				else
 					try {
 						town.setBANG(plugin.parseOnOff(split[1]));
-						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_expl"), town.isPVP() ? "Enabled" : "Disabled"));
+						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_expl"), town.isBANG() ? "Enabled" : "Disabled"));
 
 					} catch (Exception e) {
 					}
@@ -438,7 +438,7 @@ public class TownCommand implements CommandExecutor  {
 				else
 					try {
 						town.setFire(plugin.parseOnOff(split[1]));
-						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_fire"), town.isPVP() ? "Enabled" : "Disabled"));
+						plugin.getTownyUniverse().sendTownMessage(town, String.format(TownySettings.getLangString("msg_changed_fire"), town.isFire() ? "Enabled" : "Disabled"));
 
 					} catch (Exception e) {
 					}

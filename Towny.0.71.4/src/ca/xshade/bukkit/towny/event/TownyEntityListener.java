@@ -47,20 +47,20 @@ public class TownyEntityListener extends EntityListener {
 
 		
 		if (event instanceof EntityDamageByProjectileEvent) {
-			plugin.sendMsg("EntityDamageByProjectileEvent");
+			//plugin.sendMsg("EntityDamageByProjectileEvent");
 			EntityDamageByProjectileEvent entityEvent = (EntityDamageByProjectileEvent)event;
 			attacker = (entityEvent.getProjectile()).getShooter();
 			defender = entityEvent.getEntity();
 			
 		} else if (event instanceof EntityDamageByEntityEvent) {
-			plugin.sendMsg("EntityDamageByEntityEvent");
+			//plugin.sendMsg("EntityDamageByEntityEvent");
 			EntityDamageByEntityEvent entityEvent = (EntityDamageByEntityEvent)event;
 			attacker = entityEvent.getDamager();
 			defender = entityEvent.getEntity();
 		}
 				
 		if (attacker != null) {	
-			plugin.sendMsg("Attacker not null");
+			//plugin.sendMsg("Attacker not null");
 			
 			TownyUniverse universe = plugin.getTownyUniverse();
 			try {
