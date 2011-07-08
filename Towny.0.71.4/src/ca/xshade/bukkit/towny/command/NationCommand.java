@@ -842,7 +842,12 @@ public class NationCommand implements CommandExecutor  {
 					} catch (IConomyException e) {
 						plugin.sendErrorMsg(player, e.getError());
 					} catch (TownyException e) {
-						nation.setNeutral(false);
+						try {
+							nation.setNeutral(false);
+						} catch (TownyException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						plugin.sendErrorMsg(player, e.getError());
 					} catch (Exception e) {
 						plugin.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_invalid_input"), " on/off."));

@@ -102,7 +102,7 @@ public class PlotCommand implements CommandExecutor  {
 				} else if (split[0].equalsIgnoreCase("notforsale") || split[0].equalsIgnoreCase("nfs")) {
 					WorldCoord worldCoord = new WorldCoord(world, Coord.parseCoord(player));
 					setPlotForSale(resident, worldCoord, false);
-				} else if (split[0].equalsIgnoreCase("forsale")) {
+				} else if (split[0].equalsIgnoreCase("forsale") || split[0].equalsIgnoreCase("fs")) {
 					WorldCoord worldCoord = new WorldCoord(world, Coord.parseCoord(player));
 					setPlotForSale(resident, worldCoord, true);
 				}

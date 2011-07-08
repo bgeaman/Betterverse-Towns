@@ -887,7 +887,12 @@ public class TownyUniverse extends TownyObject {
 			}
 			if (nation.isNeutral())
 				if (!nation.pay(TownySettings.getNationNeutralityCost())) {
-					nation.setNeutral(false);
+					try {
+						nation.setNeutral(false);
+					} catch (TownyException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					getDataSource().saveNation(nation);
 					sendNationMessage(nation, TownySettings.getLangString("msg_nation_not_neutral"));
 				}

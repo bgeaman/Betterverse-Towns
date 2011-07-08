@@ -776,6 +776,10 @@ public class TownySettings {
 	public static boolean isPvEWithinNonPvPZones() {
 		return getBoolean("PVE_IN_NON_PVP_TOWNS");
 	}
+	
+	public static boolean isDeclaringNeutral() {
+		return getBoolean("WARTIME_NATION_CAN_BE_NEUTRAL");
+	}
 
 	public static boolean isRemovingOnMonarchDeath() {
 		return getBoolean("WARTIME_REMOVE_ON_MONARCH_DEATH");

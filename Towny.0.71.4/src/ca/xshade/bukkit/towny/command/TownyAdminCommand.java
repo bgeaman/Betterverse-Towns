@@ -47,6 +47,7 @@ public class TownyAdminCommand implements CommandExecutor  {
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "", TownySettings.getLangString("admin_panel_1")));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "set [] .. []", "'/townyadmin set' " + TownySettings.getLangString("res_5")));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "war toggle [on/off]", ""));
+		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "war neutral [on/off]", ""));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "givebonus [town] [num]", ""));
 		//TODO: ta_help.add(ChatTools.formatCommand("", "/townyadmin", "npc rename [old name] [new name]", ""));
 		//TODO: ta_help.add(ChatTools.formatCommand("", "/townyadmin", "npc list", ""));
@@ -337,13 +338,14 @@ public class TownyAdminCommand implements CommandExecutor  {
 	
 	public void parseWarCommand(Player player, String[] split) {
 		if (split.length == 0) {
+			//command was '/townyadmin war'
 			
 		} else if (split[0].equalsIgnoreCase("toggle")) {
 			boolean isWarTime = plugin.getTownyUniverse().isWarTime();
 			boolean choice;
 			if (split.length == 2)
 				try {
-					choice = parseOnOff(split[1]);
+					choice = plugin.parseOnOff(split[1]);
 				} catch (Exception e) {
 					plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
 					return;
@@ -360,6 +362,24 @@ public class TownyAdminCommand implements CommandExecutor  {
 				plugin.getTownyUniverse().endWarEvent();
 				plugin.sendMsg(player, TownySettings.getLangString("msg_war_ended"));
 			}
+		} else if (split[0].equalsIgnoreCase("neutral") && split.length == 2) {
+			boolean choice;
+				try {
+					choice = plugin.parseOnOff(split[1]);
+					plugin.setSetting("wartime_nation_can_be_neutral", choice);
+					plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_nation_allow_neutral"), choice ? "Enabled" : "Disabled"));
+					
+				} catch (Exception e) {
+					plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
+					return;
+				}
+
+			
+			
+			
+		} else {
+			// parameter error message
+			
 		}
 	}
 	

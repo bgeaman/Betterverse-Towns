@@ -374,6 +374,8 @@ economy:
 # +------------------------------------------------------+ #
 ############################################################
 
+#This setting allows you disable the ability for a nation to pay to remain neutral during a war.
+wartime_nation_can_be_neutral: true
 wartime_base_spoils: 100.0
 wartime_home_block_hp: 120
 wartime_min_height: 60

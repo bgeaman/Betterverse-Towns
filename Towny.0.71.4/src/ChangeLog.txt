@@ -301,3 +301,9 @@ v0.71.4:
 V0.71.4 RC2:
     - Added to Wildzone ignore ID's - Wood, flowers, tall grass, leaves, cacti, pumpkins, sugarcane, mushrooms, saplings.
     - Added code to reset world wildzone ignore ID's to default at first run.
+    - Fixed typo on Firespread message in language file.
+    - Added 'wartime_nation_can_be_neutral' to the config.
+      This setting allows you disable the ability for a nation to pay to remain neutral during a war.
+      Toggle in game with '/townyadmin war neutral [on/off]
+    - Added fs as an abreviation for forsale when used in '/plot forsale'.
+    

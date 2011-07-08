@@ -280,10 +280,13 @@ public class Nation extends TownyIConomyObject implements ResidentList {
 		assistants.clear();
 	}
 
-	public void setNeutral(boolean neutral) {
-		this.neutral = neutral;
+	public void setNeutral(boolean neutral) throws TownyException {
+		if (!TownySettings.isDeclaringNeutral() && neutral)
+			throw new TownyException("Neutrality is not an option! Fight like a King!");
+		else
+			this.neutral = neutral;
 	}
-
+		 
 	public boolean isNeutral() {
 		return neutral;
 	}
