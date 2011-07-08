@@ -3,7 +3,7 @@ main: ca.xshade.bukkit.towny.Towny
 version: 0.71.4
 language: english.yml
 last_run_version: 0.71.4
-author: Shade, Modified by FuzzeWuzze. Forked by ElgarL & croxis
+author: Shade, Modified by FuzzeWuzze. Forked by ElgarL
 website: 
 description: >
     Resident-Town-Nation heirarchy combined with a grid based
