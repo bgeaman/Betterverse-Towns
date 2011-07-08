@@ -298,3 +298,6 @@ v0.71.4:
 	- Added a fix to prevent players firing from the wild into a PVP disabled town to attack.
 	- Added '/town set fire [on/off]' to prevent fire damage/spread in a town.
 	- Fixed an error where a town/nation data file may not be moved if a previous town/nation of the same name had been deleted/renamed prior.
+V0.71.4 RC2:
+    - Added to Wildzone ignore ID's - Wood, flowers, tall grass, leaves, cacti, pumpkins, sugarcane, mushrooms, saplings.
+    - Added code to reset world wildzone ignore ID's to default at first run.
