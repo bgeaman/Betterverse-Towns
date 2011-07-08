@@ -22,6 +22,7 @@ import ca.xshade.bukkit.towny.TownySettings;
 import ca.xshade.bukkit.towny.object.Nation;
 import ca.xshade.bukkit.towny.object.Resident;
 import ca.xshade.bukkit.towny.object.Town;
+import ca.xshade.bukkit.towny.object.TownyIConomyObject;
 import ca.xshade.bukkit.towny.object.TownyUniverse;
 import ca.xshade.bukkit.towny.questioner.JoinNationTask;
 import ca.xshade.bukkit.towny.questioner.ResidentNationQuestionTask;
@@ -767,6 +768,7 @@ public class NationCommand implements CommandExecutor  {
 			player.sendMessage(ChatTools.formatCommand("", "/nation set", "capital [town]", ""));
 			player.sendMessage(ChatTools.formatCommand("", "/nation set", "taxes [$]", ""));
 			player.sendMessage(ChatTools.formatCommand("", "/nation set", "name [name]", ""));
+			player.sendMessage(ChatTools.formatCommand("", "/nation set", "neutral [on/off]", ""));
 		} else {
 			Resident resident;
 			Nation nation;
@@ -830,14 +832,25 @@ public class NationCommand implements CommandExecutor  {
 					plugin.sendErrorMsg(player, "Eg: /nation set neutral [on/off]");
 				else
 					try {
+						if (!TownySettings.isDeclaringNeutral())
+							throw new TownyException(TownySettings.getLangString("msg_neutral_disabled"));
+							
+
 						boolean choice = parseOnOff(split[1]);
+						Double cost = TownySettings.getNationNeutralityCost();
 						
-						if (choice && TownySettings.isUsingIConomy() && !nation.pay(TownySettings.getNationNeutralityCost()))
+						if (choice && TownySettings.isUsingIConomy() && !nation.pay(cost))
 							throw new TownyException(TownySettings.getLangString("msg_nation_cant_neutral"));
 							
 						nation.setNeutral(choice);
 						plugin.updateCache();
-						plugin.sendMsg(player, TownySettings.getLangString("msg_nation_set_neutral"));
+
+						// send message depending on if using IConomy and charging for neutral
+						if (TownySettings.isUsingIConomy() && cost > 0)
+							plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_you_paid"), cost + TownyIConomyObject.getIConomyCurrency()));
+						else							
+							plugin.sendMsg(player, TownySettings.getLangString("msg_nation_set_neutral"));
+						
 						plugin.getTownyUniverse().sendNationMessage(nation, TownySettings.getLangString("msg_nation_neutral") + (nation.isNeutral() ? Colors.Green : Colors.Red + " not") + " neutral.");
 					} catch (IConomyException e) {
 						plugin.sendErrorMsg(player, e.getError());

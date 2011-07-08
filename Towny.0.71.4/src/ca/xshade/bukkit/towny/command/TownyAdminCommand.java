@@ -375,8 +375,6 @@ public class TownyAdminCommand implements CommandExecutor  {
 				}
 
 			
-			
-			
 		} else {
 			// parameter error message
 			

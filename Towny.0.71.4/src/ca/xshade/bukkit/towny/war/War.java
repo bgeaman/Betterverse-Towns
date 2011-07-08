@@ -134,9 +134,21 @@ public class War {
 		}
 		
 		//Gather all nations at war
-		for (Nation nation : universe.getNations())
-			if (!nation.isNeutral())
+		for (Nation nation : universe.getNations()) {
+			if (!nation.isNeutral()) {
 				add(nation);
+				universe.sendGlobalMessage(String.format(TownySettings.getLangString("msg_war_join_nation"), nation.getName()));
+			} else if (!TownySettings.isDeclaringNeutral()) {
+					try {
+						nation.setNeutral(false);
+						add(nation);
+						universe.sendGlobalMessage(String.format(TownySettings.getLangString("msg_war_join_forced"), nation.getName()));
+					} catch (TownyException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		}
 		//warTimer.scheduleAtFixedRate(new WarTimerTask(this), 0, 1000);
 		int id = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(getPlugin(), new WarTimerTask(this), 0, MinecraftTools.convertToTicks(1000));
 		if (id == -1) {
