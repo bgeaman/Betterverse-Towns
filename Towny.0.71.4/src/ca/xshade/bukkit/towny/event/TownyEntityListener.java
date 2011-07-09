@@ -191,7 +191,7 @@ public class TownyEntityListener extends EntityListener {
 				
 			//remove from towns if in the list and set to remove
 			
-			if (TownySettings.isRemovingTownMobs() && MobRemovalTimerTask.isRemovingWorldEntity(livingEntity)) {
+			if (TownySettings.isRemovingTownMobs() && MobRemovalTimerTask.isRemovingTownEntity(livingEntity)) {
 				
 				try {
 					TownyWorld townyWorld = plugin.getTownyUniverse().getWorld(loc.getWorld().getName());

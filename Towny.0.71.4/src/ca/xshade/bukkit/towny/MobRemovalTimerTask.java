@@ -25,6 +25,7 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 	public MobRemovalTimerTask(TownyUniverse universe, Server server) {
 		super(universe);
 		this.server = server;
+		
 		worldMobsToRemove.clear();
 		for (String mob : TownySettings.getWorldMobRemovalEntities())
 			try {
@@ -105,6 +106,8 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 		//universe.getPlugin().sendDebugMsg("MobRemoval (Removed: "+numRemoved+") (Total Living: "+livingEntities+")");
 		*/
 		
+		System.out.println("[Towny] MobRemovalTimerTask - run()");
+		
 		boolean isRemovingWorldMobs = TownySettings.isRemovingWorldMobs();
 		boolean isRemovingTownMobs = TownySettings.isRemovingTownMobs();
 		
@@ -118,9 +121,15 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 						try {
 							TownyWorld townyWorld = universe.getWorld(world.getName());
 							TownBlock townBlock = townyWorld.getTownBlock(coord);
-							if ((isRemovingTownMobs && !townBlock.getTown().hasMobs() && isRemovingTownEntity(livingEntity)) || (isRemovingWorldMobs && isRemovingWorldEntity(livingEntity)))
+							if ((isRemovingTownMobs && !townBlock.getTown().hasMobs() && isRemovingTownEntity(livingEntity))) {
+								//System.out.println("[Towny] MobRemovalTimerTask - added: " + livingEntity.toString());
 								livingEntitiesToRemove.add(livingEntity);
+							}
+								
 						} catch (TownyException x) {
+							// it will fall through here if the mob has no townblock.
+							if ((isRemovingWorldMobs && isRemovingWorldEntity(livingEntity)))
+								livingEntitiesToRemove.add(livingEntity);
 						}
 				}
 					

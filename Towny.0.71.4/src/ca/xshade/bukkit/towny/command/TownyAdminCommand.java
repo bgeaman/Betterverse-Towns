@@ -376,7 +376,7 @@ public class TownyAdminCommand implements CommandExecutor  {
 		} else if (split[0].equalsIgnoreCase("townmobs")) {
 
 			try {
-				choice = !TownySettings.getBoolean("protection.mob_removal_town");
+				choice = !TownySettings.isRemovingTownMobs();
 				plugin.setSetting("protection.mob_removal_town", choice);
 				plugin.getTownyUniverse().toggleMobRemoval(TownySettings.isRemovingWorldMobs() || TownySettings.isRemovingTownMobs() );
 				plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_mobremoval_town"), choice ? "Enabled" : "Disabled"));
@@ -389,7 +389,7 @@ public class TownyAdminCommand implements CommandExecutor  {
 		}  else if (split[0].equalsIgnoreCase("worldmobs")) {
 			
 			try {
-				choice = !TownySettings.getBoolean("protection.mob_removal_world");
+				choice = !TownySettings.isRemovingWorldMobs();
 				plugin.setSetting("protection.mob_removal_world", choice);
 				plugin.getTownyUniverse().toggleMobRemoval(TownySettings.isRemovingWorldMobs() || TownySettings.isRemovingTownMobs() );
 				plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_mobremoval_world"), choice ? "Enabled" : "Disabled"));
