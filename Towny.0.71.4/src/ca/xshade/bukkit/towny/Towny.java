@@ -94,9 +94,9 @@ public class Towny extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		version = this.getDescription().getVersion();
-		System.out.println("[Towny] Towny - create TownyUniverse Object...");
+		//System.out.println("[Towny] Towny - create TownyUniverse Object...");
 		townyUniverse = new TownyUniverse(this);
-		System.out.println("[Towny] Towny - Starting loadSettings...");
+		//System.out.println("[Towny] Towny - Starting loadSettings...");
 		loadSettings();
 		setupLogger();		
 		
@@ -248,7 +248,7 @@ public class Towny extends JavaPlugin {
 	
 	public void loadSettings() {
 		
-		System.out.println("[Towny] load");
+		//System.out.println("[Towny] load");
 		
 		townyUniverse.loadSettings();
 		Coord.setCellSize(TownySettings.getTownBlockSize());
