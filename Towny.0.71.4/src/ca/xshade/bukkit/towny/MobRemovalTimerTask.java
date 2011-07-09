@@ -106,6 +106,8 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 		//universe.getPlugin().sendDebugMsg("MobRemoval (Removed: "+numRemoved+") (Total Living: "+livingEntities+")");
 		*/
 		
+		//System.out.println("[Towny] MobRemovalTimerTask - run()");
+		
 		boolean isRemovingWorldMobs = TownySettings.isRemovingWorldMobs();
 		boolean isRemovingTownMobs = TownySettings.isRemovingTownMobs();
 		

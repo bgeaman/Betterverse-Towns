@@ -78,12 +78,15 @@ public class TownyUniverse extends TownyObject {
 	}
 	
 	public void toggleMobRemoval(boolean on) {
+		
 		if (on && !isMobRemovalRunning()) {
 			mobRemoveTask = getPlugin().getServer().getScheduler().scheduleSyncRepeatingTask(getPlugin(), new MobRemovalTimerTask(this, plugin.getServer()), 0, MinecraftTools.convertToTicks(TownySettings.getMobRemovalSpeed()));
 			if (mobRemoveTask == -1)
 				plugin.sendErrorMsg("Could not schedule mob removal loop.");
-		} else if (!on && isMobRemovalRunning())
+		} else if (!on && isMobRemovalRunning()) {
 			getPlugin().getServer().getScheduler().cancelTask(mobRemoveTask);
+			mobRemoveTask = -1;
+		}
 	}
 	
 	public void toggleDailyTimer(boolean on) {
