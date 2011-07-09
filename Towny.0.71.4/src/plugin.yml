@@ -183,8 +183,7 @@ debug_mode: false
 # Spams the player named in dev_name with all messages related to towny.
 dev_mode: false
 dev_name: Shadeness
-# Used to determine if it's the first run.
-first_run: true
+
 logging: true
 
 name_check_regex: '^[a-zA-Z0-9]+[a-zA-Z0-9._-]*$'
@@ -195,7 +194,6 @@ npc_prefix: 'NPC'
 
 pve_in_non_pvp_towns: true
 reset_log_on_boot: true
-save_on_load: false
 
 # Enables the [~Home] message.
 # If false it will make it harder for enemies to find the home block during a war

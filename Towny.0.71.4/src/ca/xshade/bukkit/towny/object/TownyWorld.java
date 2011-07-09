@@ -180,10 +180,11 @@ public class TownyWorld extends TownyObject {
 	}
 
 	public void setUnclaimedZoneIgnore(List<Integer> unclaimedZoneIgnoreIds) {
-		
+		/*
 		if (TownySettings.isFirstRun())
 			this.unclaimedZoneIgnoreIds = TownySettings.getUnclaimedZoneIgnoreIds();
-		else		
+		else	
+		*/	
 			this.unclaimedZoneIgnoreIds = unclaimedZoneIgnoreIds;
 	}
 

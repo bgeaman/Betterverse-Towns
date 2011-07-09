@@ -310,3 +310,6 @@ V0.71.4 RC2:
     - Added global messages of what nations are at war.
     - Added better sanity checking on the global neutral settings.
     - Towny should no longer erase resident/town data on exit if there was a loading problem.
+    - Moved last of the CSV files to the yml, and depreciated config settings for save_onload and first_run.
+    - Fixed Nation prefix and suffix to read from the new config.yml entries
+    - Depreciated all default prefix/poxfix entries. Now uses the new townLevel and nationLevel entries in config.yml

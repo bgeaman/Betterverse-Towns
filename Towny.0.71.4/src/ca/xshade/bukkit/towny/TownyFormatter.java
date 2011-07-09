@@ -240,7 +240,7 @@ public class TownyFormatter {
 	}
 
 	public String getFormattedNationName(Nation nation) {
-		return TownySettings.getNationPrefix() + nation.getName().replaceAll("_", " ") + TownySettings.getNationPostfix();
+		return TownySettings.getNationPrefix(nation) + nation.getName().replaceAll("_", " ") + TownySettings.getNationPostfix(nation);
 	}
 
 	public String[] getFormattedNames(Resident[] residents) {

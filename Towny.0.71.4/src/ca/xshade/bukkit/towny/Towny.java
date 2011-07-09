@@ -1,7 +1,5 @@
 package ca.xshade.bukkit.towny;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -132,10 +130,11 @@ public class Towny extends JavaPlugin {
 				e.printStackTrace();
 			}
 			
-			if (TownySettings.isSavingOnLoad())
-				townyUniverse.getDataSource().saveAll();
+			//if (TownySettings.isSavingOnLoad())
+			//	townyUniverse.getDataSource().saveAll();
 		} catch (UnsupportedOperationException e) {
 			System.out.println("[Towny] Error: Unsupported save format!");
+			error = true;
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
@@ -143,12 +142,13 @@ public class Towny extends JavaPlugin {
 		checkPlugins();
 		load();
 		
-
+		/*
 		if (TownySettings.isFirstRun()) {
 			firstRun();
 			setSetting("FIRST_RUN", false);
 			loadSettings();
 		}
+		*/
 
 		
 		if (TownySettings.isTownyUpdating(getVersion()))
@@ -247,6 +247,9 @@ public class Towny extends JavaPlugin {
 	}
 	
 	public void loadSettings() {
+		
+		System.out.println("[Towny] load");
+		
 		townyUniverse.loadSettings();
 		Coord.setCellSize(TownySettings.getTownBlockSize());
 		TownyIConomyObject.setPlugin(this);
@@ -254,7 +257,8 @@ public class Towny extends JavaPlugin {
 	}
 	
 	public void load() {
-		loadSettings();
+		
+		//loadSettings();
 		if (TownySettings.isForcingPvP())
 			for (Town town : townyUniverse.getTowns())
 				town.setPVP(true);
@@ -290,6 +294,7 @@ public class Towny extends JavaPlugin {
 		getServer().getPluginManager().registerEvent(Event.Type.WORLD_LOAD, worldListener, Priority.Normal, this);
 	}
 	
+	/*
 	private void firstRun() {
 		System.out.println("------------------------------------");
 		System.out.println("[Towny] Detected first run");
@@ -323,6 +328,7 @@ public class Towny extends JavaPlugin {
 		}
 		System.out.println("------------------------------------");
 	}
+	*/
 	
 	public void update() {
 		try {

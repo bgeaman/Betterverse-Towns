@@ -1,12 +1,11 @@
 package ca.xshade.bukkit.towny;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -103,9 +102,37 @@ public class TownySettings {
 	 */
 	
 	public static void loadTownLevelConfig(String filepath) throws IOException {
-		String line;
-		String[] tokens;
-		BufferedReader fin = new BufferedReader(new FileReader(filepath));
+
+		String[] tokens;		
+		List<String> lines = (List<String>)config.getProperty("townLevel");
+		
+		//get an Iterator object for list using iterator() method.
+		Iterator<String> itr = lines.iterator();
+		
+		//use hasNext() and next() methods of Iterator to iterate through the elements
+		while(itr.hasNext()) {
+                tokens = itr.next().split(",", 6);
+                if (tokens.length >= 6)
+					try {
+                        int numResidents = Integer.parseInt(tokens[0]);
+                        int townBlockLimit = Integer.parseInt(tokens[5]);
+                        newTownLevel(numResidents, tokens[1], tokens[2], tokens[3], tokens[4], townBlockLimit);
+						if (getDebug())
+							// Used to know the actual values registered
+							 System.out.println("[Towny] Debug: Added town level: "+numResidents+" "+Arrays.toString(getTownLevel(numResidents).values().toArray()));
+							//System.out.println("[Towny] Debug: Added town level: "+numResidents+" "+Arrays.toString(tokens));
+                    } catch (Exception e) {
+                    	System.out.println("[Towny] Input Error: Town level ignored: " + itr.toString());
+                    }
+                else
+                	System.out.println("[Towny] loadTownLevelConfig bad length");
+            //}
+			
+		}
+		
+		/*
+		//BufferedReader fin = new BufferedReader(new FileReader(filepath));
+		 
         while ((line = fin.readLine()) != null)
 			if (!line.startsWith("#")) { //Ignore comment lines
                 tokens = line.split(",", 6);
@@ -123,6 +150,7 @@ public class TownySettings {
                     }
             }
         fin.close();
+        */
 	}
 	
 	/**
@@ -136,6 +164,32 @@ public class TownySettings {
 	 */
 	
 	public static void loadNationLevelConfig(String filepath) throws IOException {
+		
+		String[] tokens;		
+		List<String> lines = (List<String>)config.getProperty("townLevel");
+		
+		//get an Iterator object for list using iterator() method.
+		Iterator<String> itr = lines.iterator();
+		
+		//use hasNext() and next() methods of Iterator to iterate through the elements
+		while(itr.hasNext()) {
+			tokens = itr.next().split(",", 7);
+            if (tokens.length >= 7)
+				try {
+                    int numResidents = Integer.parseInt(tokens[0]);
+                    newNationLevel(numResidents, tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6]);
+					if (getDebug())
+						// Used to know the actual values registered
+						// System.out.println("[Towny] Debug: Added nation level: "+numResidents+" "+Arrays.toString(getNationLevel(numResidents).values().toArray()));
+						System.out.println("[Towny] Debug: Added nation level: "+numResidents+" "+Arrays.toString(tokens));
+                } catch (Exception e) {
+                	System.out.println("[Towny] Input Error: Nation level ignored: " + itr.toString());
+                }
+
+			
+		}
+		
+		/*
 		String line;
 		String[] tokens;
 		BufferedReader fin = new BufferedReader(new FileReader(filepath));
@@ -155,6 +209,7 @@ public class TownySettings {
                     }
             }
         fin.close();
+        */
 	}
 	
 	public static Map<TownySettings.TownLevel,Object> getTownLevel(int numResidents) {
@@ -390,7 +445,8 @@ public class TownySettings {
 		try {
 			return (String)getNationLevel(resident.getTown().getNation()).get(TownySettings.NationLevel.KING_PREFIX);
 		} catch (NotRegisteredException e) {
-			return getLangString("DEFAULT_KING_PREFIX");
+			System.out.println("[Towny] Error: Could not read getKingPrefix.");
+			return "";
 		}
 	}
 
@@ -398,7 +454,8 @@ public class TownySettings {
 		try {
 			return (String)getTownLevel(resident.getTown()).get(TownySettings.TownLevel.MAYOR_PREFIX);
 		} catch (NotRegisteredException e) {
-			return getLangString("DEFAULT_MAYOR_PREFIX");
+			System.out.println("[Towny] Error: Could not read getMayorPrefix.");
+			return "";
 		}
 	}
 
@@ -406,7 +463,8 @@ public class TownySettings {
 		try {
 			return (String)getNationLevel(town.getNation()).get(TownySettings.NationLevel.CAPITAL_POSTFIX);
 		} catch (NotRegisteredException e) {
-			return getLangString("DEFAULT_CAPITAL_POSTFIX");
+			System.out.println("[Towny] Error: Could not read getCapitalPostfix.");
+			return "";
 		}
 	}
 
@@ -414,25 +472,35 @@ public class TownySettings {
 		try {
 			return (String)getTownLevel(town).get(TownySettings.TownLevel.NAME_POSTFIX);
 		} catch (Exception e) {
-			// Should not reach here
-			return getLangString("DEFAULT_TOWN_POSTFIX");
+			System.out.println("[Towny] Error: Could not read getTownPostfix.");
+			return "";
 		}
 	}
 	
-	public static String getNationPostfix() {
-		return getLangString("DEFAULT_NATION_POSTFIX");
+	public static String getNationPostfix(Nation nation) {
+		try {
+			return (String)getNationLevel(nation).get(TownySettings.NationLevel.NAME_POSTFIX);
+		} catch (Exception e) {
+			System.out.println("[Towny] Error: Could not read getNationPostfix.");
+			return "";
+		}
 	}
 	
-	public static String getNationPrefix() {
-		return getLangString("DEFAULT_NATION_PREFIX");
+	public static String getNationPrefix(Nation nation) {
+		try {
+			return (String)getNationLevel(nation).get(TownySettings.NationLevel.NAME_PREFIX);
+		} catch (Exception e) {
+			System.out.println("[Towny] Error: Could not read getNationPrefix.");
+			return "";
+		}
 	}
 	
 	public static String getTownPrefix(Town town) {
 		try {
 			return (String)getTownLevel(town).get(TownySettings.TownLevel.NAME_PREFIX);
 		} catch (Exception e) {
-			// Should not reach here
-			return getLangString("DEFAULT_TOWN_PREFIX");
+			System.out.println("[Towny] Error: Could not read getTownPrefix.");
+			return "";
 		}
 	}
 	
@@ -440,7 +508,8 @@ public class TownySettings {
 		try {
 			return (String)getNationLevel(town.getNation()).get(TownySettings.NationLevel.CAPITAL_PREFIX);
 		} catch (NotRegisteredException e) {
-			return getLangString("DEFAULT_CAPITAL_PREFIX");
+			System.out.println("[Towny] Error: Could not read getCapitalPrefix.");
+			return "";
 		}
 	}
 	
@@ -448,7 +517,8 @@ public class TownySettings {
 		try {
 			return (String)getNationLevel(resident.getTown().getNation()).get(TownySettings.NationLevel.KING_POSTFIX);
 		} catch (NotRegisteredException e) {
-			return getLangString("DEFAULT_KING_POSTFIX");
+			System.out.println("[Towny] Error: Could not read getKingPostfix.");
+			return "";
 		}
 	}
 	
@@ -456,7 +526,8 @@ public class TownySettings {
 		try {
 			return (String)getTownLevel(resident.getTown()).get(TownySettings.TownLevel.MAYOR_POSTFIX);
 		} catch (NotRegisteredException e) {
-			return getLangString("DEFAULT_MAYOR_POSTFIX");
+			System.out.println("[Towny] Error: Could not read getMayorPostfix.");
+			return "";
 		}
 	}
 	
@@ -525,9 +596,11 @@ public class TownySettings {
 		return getString("DATABASE_SAVE");
 	}
 	
+	/*
 	public static boolean isFirstRun() {
 		return getBoolean("FIRST_RUN");
 	}
+	*/
 
 	public static int getMaxTownBlocks(Town town) {
 		int ratio = getInt("TOWN_BLOCK_RATIO");
@@ -931,9 +1004,11 @@ public class TownySettings {
 		}
 	}
 
+	/*
 	public static boolean isSavingOnLoad() {
 		return getBoolean("SAVE_ON_LOAD");
 	}
+	*/
 	
 	public static boolean isAllowingResidentPlots() {
 		return getBoolean("ALLOW_RESIDENT_PLOTS");
