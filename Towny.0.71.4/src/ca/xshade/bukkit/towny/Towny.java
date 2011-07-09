@@ -89,6 +89,7 @@ public class Towny extends JavaPlugin {
 	private Map<String, List<String>> playerMode = Collections.synchronizedMap(new HashMap<String, List<String>>());
 	private iConomy iconomy = null;
 	private Permissions permissions = null;
+	private boolean error = false;
 	private Logger logger = Logger.getLogger("ca.xshade.bukkit.towny");
 	//private GroupManager groupManager = null;
 	
@@ -116,6 +117,7 @@ public class Towny extends JavaPlugin {
 		System.out.println("[Towny] Database: [Load] " + TownySettings.getLoadDatabase() + " [Save] " + TownySettings.getSaveDatabase());
 		if (!townyUniverse.loadDatabase(TownySettings.getLoadDatabase())) {
 			System.out.println("[Towny] Error: Failed to load!");
+			error = true;
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
@@ -227,7 +229,7 @@ public class Towny extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		if (townyUniverse.getDataSource() != null)
+		if (townyUniverse.getDataSource() != null && error == false)
 			townyUniverse.getDataSource().saveAll();
 		
 		if (getTownyUniverse().isWarTime())

@@ -131,24 +131,30 @@ public abstract class TownyDataSource {
 	public boolean loadResidents() {
 		sendDebugMsg("Loading Residents");
 		for (Resident resident : universe.getResidents())
-			if (!loadResident(resident))
+			if (!loadResident(resident)) {
 				System.out.println("[Towny] Loading Error: Could not read resident data '" + resident.getName() + "'.");
+				return false;
+			}
 		return true;
 	}
 
 	public boolean loadTowns() {
 		sendDebugMsg("Loading Towns");
 		for (Town town : universe.getTowns())
-			if (!loadTown(town))
+			if (!loadTown(town)) {
 				System.out.println("[Towny] Loading Error: Could not read town data " + town.getName() + "'.");
+				return false;
+			}
 		return true;
 	}
 
 	public boolean loadNations() {
 		sendDebugMsg("Loading Nations");
 		for (Nation nation : universe.getNations())
-			if (!loadNation(nation))
+			if (!loadNation(nation)) {
 				System.out.println("[Towny] Loading Error: Could not read nation data '" + nation.getName() + "'.");
+				return false;
+			}
 		return true;
 	}
 
@@ -156,8 +162,10 @@ public abstract class TownyDataSource {
 		sendDebugMsg("Loading Worlds");
 		for (TownyWorld world : universe.getWorlds())
 			if (!loadWorld(world))
-				if (!TownySettings.isFirstRun())
+				if (!TownySettings.isFirstRun()) {
 					System.out.println("[Towny] Loading Error: Could not read world data '" + world.getName() + "'.");
+					return false;
+				}
 		return true;
 	}
 

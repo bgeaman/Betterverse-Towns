@@ -191,7 +191,7 @@ name_check_regex: '^[a-zA-Z0-9]+[a-zA-Z0-9._-]*$'
 name_filter_regex: '[ /]'
 name_remove_regex: '[^a-zA-Z0-9._-]'
 
-npc_prefix: '[NPC]'
+npc_prefix: 'NPC'
 
 pve_in_non_pvp_towns: true
 reset_log_on_boot: true

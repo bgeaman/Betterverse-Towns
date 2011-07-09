@@ -250,12 +250,18 @@ public class TownyAdminCommand implements CommandExecutor  {
 					if (split[2].equalsIgnoreCase("npc")) {
 						String name = nextNpcName();
 						plugin.getTownyUniverse().newResident(name);
+						
 						newMayor = plugin.getTownyUniverse().getResident(name);
+						
 						newMayor.setRegistered(System.currentTimeMillis());
+						newMayor.setLastOnline(1);
+						
 						plugin.getTownyUniverse().getDataSource().saveResident(newMayor);
 						plugin.getTownyUniverse().getDataSource().saveResidentList();
+
 					} else
 						newMayor = plugin.getTownyUniverse().getResident(split[2]);
+					
 					Town town = plugin.getTownyUniverse().getTown(split[1]);
 					if (!town.hasResident(newMayor))
 						TownCommand.townAddResident(town, newMayor);
@@ -264,7 +270,7 @@ public class TownyAdminCommand implements CommandExecutor  {
 											
 					town.setMayor(newMayor);
 					
-					if (oldMayor.getName().startsWith(TownySettings.getNPCPrefix())) {
+					if (oldMayor.getName().startsWith(TownySettings.getNPCPrefix()) && oldMayor.getLastOnline() == 1) {
 						try {
 							town.removeResident(oldMayor);
 							plugin.getTownyUniverse().removeResident(oldMayor);
