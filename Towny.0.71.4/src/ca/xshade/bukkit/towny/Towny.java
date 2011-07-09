@@ -264,7 +264,7 @@ public class Towny extends JavaPlugin {
 				town.setPVP(true);
 		
 		townyUniverse.toggleDailyTimer(true);
-		townyUniverse.toggleMobRemoval(TownySettings.isRemovingMobs());
+		townyUniverse.toggleMobRemoval(TownySettings.isRemovingWorldMobs() || TownySettings.isRemovingTownMobs() );
 		townyUniverse.toggleHealthRegen(TownySettings.hasHealthRegen());
 		updateCache();
 	}
@@ -540,6 +540,10 @@ public class Towny extends JavaPlugin {
 	public void setSetting(String root, Object value) {
 			TownySettings.setProperty(root, value);
 	}
+	
+	public Object getSetting(String root) {
+		return TownySettings.getProperty(root);
+}
 	
 
 	public TownBlockStatus getStatusCache(Player player, WorldCoord worldCoord) {

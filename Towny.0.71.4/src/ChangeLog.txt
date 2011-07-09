@@ -313,3 +313,5 @@ V0.71.4 RC2:
     - Moved last of the CSV files to the yml, and depreciated config settings for save_onload and first_run.
     - Fixed Nation prefix and suffix to read from the new config.yml entries
     - Depreciated all default prefix/poxfix entries. Now uses the new townLevel and nationLevel entries in config.yml
+    - Added new settings for disabling world monster spawns and town control over mob spawns within their walls.
+    - Changes to /townyadmin commands for war, neutral, townmobs, worldmobs, devmode and debug. Now use /townyadmin toggle XXX.

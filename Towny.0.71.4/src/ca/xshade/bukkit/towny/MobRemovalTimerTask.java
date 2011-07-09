@@ -17,31 +17,57 @@ import ca.xshade.util.JavaUtil;
 public class MobRemovalTimerTask extends TownyTimerTask {
 	private Server server;
 	@SuppressWarnings("rawtypes")
-	public static List<Class> mobsToRemove = new ArrayList<Class>();
+	public static List<Class> worldMobsToRemove = new ArrayList<Class>();
+	@SuppressWarnings("rawtypes")
+	public static List<Class> townMobsToRemove = new ArrayList<Class>();
 	
 	@SuppressWarnings("rawtypes")
 	public MobRemovalTimerTask(TownyUniverse universe, Server server) {
 		super(universe);
 		this.server = server;
-		mobsToRemove.clear();
-		for (String mob : TownySettings.getMobRemovalEntities())
+		worldMobsToRemove.clear();
+		for (String mob : TownySettings.getWorldMobRemovalEntities())
 			try {
 				Class c = Class.forName("org.bukkit.entity."+mob);
 				if (JavaUtil.isSubInterface(LivingEntity.class, c))
-					mobsToRemove.add(c);
+					worldMobsToRemove.add(c);
 				else
 					throw new Exception();
 			} catch (ClassNotFoundException e) {
-				plugin.sendErrorMsg(mob + " is not an acceptable class.");
+				plugin.sendErrorMsg("WorldMob: " + mob + " is not an acceptable class.");
 			} catch (Exception e) {
-				plugin.sendErrorMsg(mob + " is not an acceptable living entity.");
+				plugin.sendErrorMsg("WorldMob: " + mob + " is not an acceptable living entity.");
+			}
+		
+		townMobsToRemove.clear();
+		for (String mob : TownySettings.getTownMobRemovalEntities())
+			try {
+				Class c = Class.forName("org.bukkit.entity."+mob);
+				if (JavaUtil.isSubInterface(LivingEntity.class, c))
+					townMobsToRemove.add(c);
+				else
+					throw new Exception();
+			} catch (ClassNotFoundException e) {
+				plugin.sendErrorMsg("TownMob: " + mob + " is not an acceptable class.");
+			} catch (Exception e) {
+				plugin.sendErrorMsg("TownMob: " + mob + " is not an acceptable living entity.");
 			}
 	}
 	
 	
 	@SuppressWarnings("rawtypes")
-	public static boolean isRemovingEntity(LivingEntity livingEntity) {
-		for (Class c : mobsToRemove)
+	public static boolean isRemovingWorldEntity(LivingEntity livingEntity) {
+		for (Class c : worldMobsToRemove)
+			if (c.isInstance(livingEntity))
+				return true;
+			else if (c.getName().contains(livingEntity.toString()))
+				System.out.print(livingEntity.toString());
+		return false;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static boolean isRemovingTownEntity(LivingEntity livingEntity) {
+		for (Class c : townMobsToRemove)
 			if (c.isInstance(livingEntity))
 				return true;
 			else if (c.getName().contains(livingEntity.toString()))
@@ -79,21 +105,26 @@ public class MobRemovalTimerTask extends TownyTimerTask {
 		//universe.getPlugin().sendDebugMsg("MobRemoval (Removed: "+numRemoved+") (Total Living: "+livingEntities+")");
 		*/
 		
+		boolean isRemovingWorldMobs = TownySettings.isRemovingWorldMobs();
+		boolean isRemovingTownMobs = TownySettings.isRemovingTownMobs();
 		
-		for (World world : server.getWorlds()) {
-			List<LivingEntity> livingEntitiesToRemove = new ArrayList<LivingEntity>();
-			//livingEntities += world.getLivingEntities().size();
-			for (LivingEntity livingEntity : world.getLivingEntities())
-				if (isRemovingEntity(livingEntity)) {
+		// Build a list of mobs to be removed
+		if (isRemovingTownMobs || isRemovingWorldMobs)
+			for (World world : server.getWorlds()) {
+				List<LivingEntity> livingEntitiesToRemove = new ArrayList<LivingEntity>();
+				
+				for (LivingEntity livingEntity : world.getLivingEntities()) {
 					Coord coord = Coord.parseCoord(livingEntity.getLocation());
-					try {
-						TownyWorld townyWorld = universe.getWorld(world.getName());
-						TownBlock townBlock = townyWorld.getTownBlock(coord);
-						if (!townBlock.getTown().hasMobs())
-							livingEntitiesToRemove.add(livingEntity);
-					} catch (TownyException x) {
-					}
+						try {
+							TownyWorld townyWorld = universe.getWorld(world.getName());
+							TownBlock townBlock = townyWorld.getTownBlock(coord);
+							if ((isRemovingTownMobs && !townBlock.getTown().hasMobs() && isRemovingTownEntity(livingEntity)) || (isRemovingWorldMobs && isRemovingWorldEntity(livingEntity)))
+								livingEntitiesToRemove.add(livingEntity);
+						} catch (TownyException x) {
+						}
 				}
+					
+
 			for (LivingEntity livingEntity : livingEntitiesToRemove) {
 				universe.getPlugin().sendDebugMsg("MobRemoval Removed: " + livingEntity.toString());
 				//livingEntity.teleportTo(new Location(world, livingEntity.getLocation().getX(), -50, livingEntity.getLocation().getZ()));

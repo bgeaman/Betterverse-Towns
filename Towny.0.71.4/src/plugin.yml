@@ -233,15 +233,22 @@ protection:
     # 25 - noteblock
     # 84 - jukebox
     switch_ids: 64,69,70,71,72,77,96,25,84,93,94
-
-    # Remove living entities within a town's boundaries.
-    mob_removal: false
+    
     # permitted entities http://jd.bukkit.org/apidocs/org/bukkit/entity/package-summary.html
     # Animals, Chicken, Cow, Creature, Creeper, Flying, Ghast, Giant, Monster, Pig, 
     # PigZombie, Sheep, Skeleton, Slime, Spider, Squid, WaterMob, Wolf, Zombie
-    mob_removal_entities: Monster,WaterMob,Flying,Slime
+
+    # Remove living entities within a town's boundaries, if the town has the mob removal flag set.
+    mob_removal_town: false
+    town_mob_removal_entities: Monster,WaterMob,Flying,Slime
+    
+    # Globally remove living entities in all worlds.
+    mob_removal_world: false
+    world_mob_removal_entities: WaterMob,Flying,Slime 
+    
     # The maximum amount of time a mob could be inside a town's boundaries before being sent to the void.
     # Lower values will check all entities more often at the risk of heavier burden and resource use.
+    # NEVER set below 1000 (guestimate)
     mob_removal_speed: 5000
 
 

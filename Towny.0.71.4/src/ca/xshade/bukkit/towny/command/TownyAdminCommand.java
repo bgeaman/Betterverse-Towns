@@ -46,13 +46,20 @@ public class TownyAdminCommand implements CommandExecutor  {
 		ta_help.add(ChatTools.formatTitle("/townyadmin"));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "", TownySettings.getLangString("admin_panel_1")));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "set [] .. []", "'/townyadmin set' " + TownySettings.getLangString("res_5")));
-		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "war toggle [on/off]", ""));
-		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "war neutral [on/off]", ""));
+		//ta_help.add(ChatTools.formatCommand("", "/townyadmin", "war toggle [on/off]", ""));
+		//ta_help.add(ChatTools.formatCommand("", "/townyadmin", "war neutral [on/off]", ""));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "givebonus [town] [num]", ""));
+		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "toggle neutral/war/townmobs/worldmobs", ""));
+		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "          debug/devmode", ""));
+
 		//TODO: ta_help.add(ChatTools.formatCommand("", "/townyadmin", "npc rename [old name] [new name]", ""));
 		//TODO: ta_help.add(ChatTools.formatCommand("", "/townyadmin", "npc list", ""));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "reload", TownySettings.getLangString("admin_panel_2")));
 		ta_help.add(ChatTools.formatCommand("", "/townyadmin", "newday", TownySettings.getLangString("admin_panel_3")));
+		
+		ta_unclaim.add(ChatTools.formatTitle("/townyadmin unclaim"));
+		ta_unclaim.add(ChatTools.formatCommand(TownySettings.getLangString("admin_sing"), "/townyadmin unclaim", "", TownySettings.getLangString("townyadmin_help_1")));
+		ta_unclaim.add(ChatTools.formatCommand(TownySettings.getLangString("admin_sing"), "/townyadmin unclaim", "rect [radius]", TownySettings.getLangString("townyadmin_help_2")));
 		
 	}
 	
@@ -65,7 +72,12 @@ public class TownyAdminCommand implements CommandExecutor  {
 		if (sender instanceof Player) {
 			Player player = (Player)sender;
 			if (plugin.isTownyAdmin(player))
-				parseTownyAdminCommand(player,args);
+				try {
+					parseTownyAdminCommand(player,args);
+				} catch (TownyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			else
 				sender.sendMessage(Colors.strip(TownySettings.getLangString("msg_err_admin_only")));
 		} else
@@ -78,7 +90,7 @@ public class TownyAdminCommand implements CommandExecutor  {
 		return true;
 	}
 	
-	public void parseTownyAdminCommand(Player player, String[] split) {
+	public void parseTownyAdminCommand(Player player, String[] split) throws TownyException {
 		if (split.length == 0){
 			buildTAPanel();
 			for (String line : ta_panel)
@@ -90,8 +102,8 @@ public class TownyAdminCommand implements CommandExecutor  {
 			adminSet(player, StringMgmt.remFirstArg(split));
 		else if (split[0].equalsIgnoreCase("town"))
 			parseAdminTownCommand(player, StringMgmt.remFirstArg(split));
-		else if (split[0].equalsIgnoreCase("war"))
-			parseWarCommand(player, StringMgmt.remFirstArg(split));
+		else if (split[0].equalsIgnoreCase("toggle"))
+			parseToggleCommand(player, StringMgmt.remFirstArg(split));
 		else if (split[0].equalsIgnoreCase("givebonus"))
 			try {
 				if (split.length != 3)
@@ -131,6 +143,7 @@ public class TownyAdminCommand implements CommandExecutor  {
 	
 	private void buildTAPanel () {
 		
+		ta_panel.clear();
 		Runtime run = Runtime.getRuntime();
 		ta_panel.add(ChatTools.formatTitle(TownySettings.getLangString("ta_panel_1")));
 		ta_panel.add(Colors.Blue + "[" + Colors.LightBlue + "Towny" + Colors.Blue + "] "
@@ -138,8 +151,13 @@ public class TownyAdminCommand implements CommandExecutor  {
 				+ Colors.Gray + " | "
 				+ Colors.Green + TownySettings.getLangString("ta_panel_3") + (plugin.getTownyUniverse().isHealthRegenRunning() ? Colors.LightGreen + "On" : Colors.Rose + "Off")
 				+ Colors.Gray + " | "
-				+ Colors.Green + TownySettings.getLangString("ta_panel_4") + (plugin.getTownyUniverse().isMobRemovalRunning() ? Colors.LightGreen + "On" : Colors.Rose + "Off"));
-		ta_panel.add(Colors.Green + TownySettings.getLangString("ta_panel_5") + (plugin.getTownyUniverse().isDailyTimerRunning() ? Colors.LightGreen + "On" : Colors.Rose + "Off"));
+				+ (Colors.Green + TownySettings.getLangString("ta_panel_5") + (plugin.getTownyUniverse().isDailyTimerRunning() ? Colors.LightGreen + "On" : Colors.Rose + "Off")));
+		ta_panel.add(Colors.Blue + "[" + Colors.LightBlue + "Towny" + Colors.Blue + "] "
+				+ Colors.Green + TownySettings.getLangString("ta_panel_4")
+				+ (TownySettings.isRemovingWorldMobs() ? Colors.LightGreen + "On" : Colors.Rose + "Off")
+				+ Colors.Gray + " | "
+				+ Colors.Green + TownySettings.getLangString("ta_panel_4_1")
+				+ (TownySettings.isRemovingTownMobs() ? Colors.LightGreen + "On" : Colors.Rose + "Off"));
 		try {
 			TownyIConomyObject.checkIConomy();
 			ta_panel.add(Colors.Blue + "[" + Colors.LightBlue + "iConomy" + Colors.Blue + "] "
@@ -152,10 +170,6 @@ public class TownyAdminCommand implements CommandExecutor  {
 				+ Colors.Green + TownySettings.getLangString("ta_panel_10") + Colors.LightGreen + Thread.getAllStackTraces().keySet().size() + Colors.Gray + " | "
 				+ Colors.Green + TownySettings.getLangString("ta_panel_11") + Colors.LightGreen + plugin.getTownyUniverse().getFormatter().getTime());
 		ta_panel.add(Colors.Yellow + MemMgmt.getMemoryBar(50, run));
-
-		ta_unclaim.add(ChatTools.formatTitle("/townyadmin unclaim"));
-		ta_unclaim.add(ChatTools.formatCommand(TownySettings.getLangString("admin_sing"), "/townyadmin unclaim", "", TownySettings.getLangString("townyadmin_help_1")));
-		ta_unclaim.add(ChatTools.formatCommand(TownySettings.getLangString("admin_sing"), "/townyadmin unclaim", "rect [radius]", TownySettings.getLangString("townyadmin_help_2")));
 	
 	}
 	
@@ -237,8 +251,8 @@ public class TownyAdminCommand implements CommandExecutor  {
 			//TODO: player.sendMessage(ChatTools.formatCommand("", "/townyadmin set", "king [nation] [king]", ""));
 			player.sendMessage(ChatTools.formatCommand("", "/townyadmin set", "mayor [town] " + TownySettings.getLangString("town_help_2"), ""));
 			player.sendMessage(ChatTools.formatCommand("", "/townyadmin set", "mayor [town] npc", ""));
-			player.sendMessage(ChatTools.formatCommand("", "/townyadmin set", "debugmode [on/off]", ""));
-			player.sendMessage(ChatTools.formatCommand("", "/townyadmin set", "devmode [on/off]", ""));
+			//player.sendMessage(ChatTools.formatCommand("", "/townyadmin set", "debugmode [on/off]", ""));
+			//player.sendMessage(ChatTools.formatCommand("", "/townyadmin set", "devmode [on/off]", ""));
 		} else if (split[0].equalsIgnoreCase("mayor")) {
 			if (split.length < 3) {
 				player.sendMessage(ChatTools.formatTitle("/townyadmin set mayor"));
@@ -284,21 +298,7 @@ public class TownyAdminCommand implements CommandExecutor  {
 				} catch (TownyException e) {
 					plugin.sendErrorMsg(player, e.getError());
 				}
-		} else if (split[0].equalsIgnoreCase("devmode"))
-			try {
-				plugin.setSetting("DEV_MODE", parseOnOff(split[1]));
-				plugin.sendMsg(player, "Turned DevMode " + (TownySettings.isDevMode() ? Colors.Green + "on" : Colors.Red + "off"));
-			} catch (Exception e) {
-				plugin.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_invalid_input"), "[on/off]"));
-			}
-		else if (split[0].equalsIgnoreCase("debugmode"))
-			try {
-				plugin.setSetting("DEBUG_MODE", parseOnOff(split[1]));
-				plugin.sendMsg(player, "Turned DebugMode " + (TownySettings.getDebug() ? Colors.Green + "on" : Colors.Red + "off"));
-			} catch (Exception e) {
-				plugin.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_invalid_input"), "[on/off]"));
-			}
-		else {
+		} else {
 			plugin.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_invalid_property"), "administrative"));
 			return;
 		}
@@ -342,36 +342,29 @@ public class TownyAdminCommand implements CommandExecutor  {
 		plugin.sendMsg(TownySettings.getLangString("msg_reloaded"));
 	}
 	
-	public void parseWarCommand(Player player, String[] split) {
+	public void parseToggleCommand(Player player, String[] split) throws TownyException {
+		boolean choice;
+		
 		if (split.length == 0) {
-			//command was '/townyadmin war'
+			//command was '/townyadmin toggle'
+			plugin.sendErrorMsg(player, String.format(TownySettings.getLangString("msg_err_invalid_input"), "Eg: /townyadmin toggle war"));
+			return;
 			
-		} else if (split[0].equalsIgnoreCase("toggle")) {
+		} else if (split[0].equalsIgnoreCase("war")) {
 			boolean isWarTime = plugin.getTownyUniverse().isWarTime();
-			boolean choice;
-			if (split.length == 2)
-				try {
-					choice = plugin.parseOnOff(split[1]);
-				} catch (Exception e) {
-					plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
-					return;
-				}
-			else
-				choice = !isWarTime;
+			choice = !isWarTime;
 			
-			if (isWarTime && choice)
-				plugin.sendErrorMsg(player, TownySettings.getLangString("msg_war_in_progress"));
-			else if (choice) {
+			if (choice) {
 				plugin.getTownyUniverse().startWarEvent();
 				plugin.sendMsg(player, TownySettings.getLangString("msg_war_started"));
 			} else {
 				plugin.getTownyUniverse().endWarEvent();
 				plugin.sendMsg(player, TownySettings.getLangString("msg_war_ended"));
 			}
-		} else if (split[0].equalsIgnoreCase("neutral") && split.length == 2) {
-			boolean choice;
+		} else if (split[0].equalsIgnoreCase("neutral")) {
+			
 				try {
-					choice = plugin.parseOnOff(split[1]);
+					choice = !TownySettings.getBoolean("wartime_nation_can_be_neutral");
 					plugin.setSetting("wartime_nation_can_be_neutral", choice);
 					plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_nation_allow_neutral"), choice ? "Enabled" : "Disabled"));
 					
@@ -380,10 +373,52 @@ public class TownyAdminCommand implements CommandExecutor  {
 					return;
 				}
 
+		} else if (split[0].equalsIgnoreCase("townmobs")) {
+
+			try {
+				choice = !TownySettings.getBoolean("protection.mob_removal_town");
+				plugin.setSetting("protection.mob_removal_town", choice);
+				plugin.getTownyUniverse().toggleMobRemoval(TownySettings.isRemovingWorldMobs() || TownySettings.isRemovingTownMobs() );
+				plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_mobremoval_town"), choice ? "Enabled" : "Disabled"));
+				
+			} catch (Exception e) {
+				plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
+				return;
+			}
+		
+		}  else if (split[0].equalsIgnoreCase("worldmobs")) {
 			
+			try {
+				choice = !TownySettings.getBoolean("protection.mob_removal_world");
+				plugin.setSetting("protection.mob_removal_world", choice);
+				plugin.getTownyUniverse().toggleMobRemoval(TownySettings.isRemovingWorldMobs() || TownySettings.isRemovingTownMobs() );
+				plugin.sendMsg(player, String.format(TownySettings.getLangString("msg_mobremoval_world"), choice ? "Enabled" : "Disabled"));
+				
+			} catch (Exception e) {
+				plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
+				return;
+			}
+
+		
+		} else if (split[0].equalsIgnoreCase("devmode"))
+			try {
+				choice = !TownySettings.getBoolean("DEV_MODE");
+				plugin.setSetting("DEV_MODE", choice);
+				plugin.sendMsg(player, "Dev Mode " + (choice ? Colors.Green + "Enabled" : Colors.Red + "Disabled"));
+			} catch (Exception e) {
+				plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
+			}
+		else if (split[0].equalsIgnoreCase("debug"))
+			try {
+				choice = !TownySettings.getBoolean("DEBUG_MODE");
+				plugin.setSetting("DEBUG_MODE", choice);
+				plugin.sendMsg(player, "Debug Mode " + (choice ? Colors.Green + "Enabled" : Colors.Red + "Disabled"));
+			} catch (Exception e) {
+				plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
 		} else {
 			// parameter error message
-			
+			// neutral/war/townmobs/worldmobs
+			plugin.sendErrorMsg(player, TownySettings.getLangString("msg_err_invalid_choice"));
 		}
 	}
 	
@@ -435,14 +470,6 @@ public class TownyAdminCommand implements CommandExecutor  {
 			return 0; 
 		}
 	}
-	
-	private boolean parseOnOff(String s) throws Exception {
-		if (s.equalsIgnoreCase("on"))
-			return true;
-		else if (s.equalsIgnoreCase("off"))
-			return false;
-		else
-			throw new Exception(String.format(TownySettings.getLangString("msg_err_invalid_input"), " on/off."));
-	}	
+		
 
 }

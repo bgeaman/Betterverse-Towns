@@ -178,16 +178,26 @@ public class TownyEntityListener extends EntityListener {
 	
 	@Override
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		if (TownySettings.isRemovingMobs() && event.getEntity() instanceof LivingEntity) {
+		if (event.getEntity() instanceof LivingEntity) {
 			LivingEntity livingEntity = (LivingEntity)event.getEntity();
 			Location loc = event.getLocation();
-			if (MobRemovalTimerTask.isRemovingEntity(livingEntity)) {
-				Coord coord = Coord.parseCoord(loc);
+			Coord coord = Coord.parseCoord(loc);
+			
+			//remove from world if set to remove mobs globally
+			if (TownySettings.isRemovingWorldMobs() && MobRemovalTimerTask.isRemovingWorldEntity(livingEntity)){
+						plugin.sendDebugMsg("onCreatureSpawn world: Canceled " + event.getCreatureType() + " from spawning within "+coord.toString()+".");
+						event.setCancelled(true);
+			}
+				
+			//remove from towns if in the list and set to remove
+			
+			if (TownySettings.isRemovingTownMobs() && MobRemovalTimerTask.isRemovingWorldEntity(livingEntity)) {
+				
 				try {
 					TownyWorld townyWorld = plugin.getTownyUniverse().getWorld(loc.getWorld().getName());
 					TownBlock townBlock = townyWorld.getTownBlock(coord);
 					if (!townBlock.getTown().hasMobs())
-						plugin.sendDebugMsg("onCreatureSpawn: Canceled " + event.getCreatureType() + " from spawning within "+coord.toString()+".");
+						plugin.sendDebugMsg("onCreatureSpawn town: Canceled " + event.getCreatureType() + " from spawning within "+coord.toString()+".");
 						event.setCancelled(true);
 				} catch (TownyException x) {
 				}

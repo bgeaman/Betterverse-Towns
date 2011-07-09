@@ -288,7 +288,7 @@ public class TownySettings {
 		return str.replaceAll("&", "\u00A7");
 	}
 	
-	private static Boolean getBoolean(String root){
+	public static Boolean getBoolean(String root){
         return config.getBoolean(root.toLowerCase(), true);
     }
     private static Double getDouble(String root){
@@ -719,17 +719,26 @@ public class TownySettings {
 		return getInt("WARTIME_MIN_HEIGHT");
 	}
 	
-	public static List<String> getMobRemovalEntities() {
-		if (getDebug()) System.out.println("[Towny] Debug: Reading Mob removal entities. ");
-		return getStrArr("protection.MOB_REMOVAL_ENTITIES");
+	public static List<String> getWorldMobRemovalEntities() {
+		if (getDebug()) System.out.println("[Towny] Debug: Reading World Mob removal entities. ");
+		return getStrArr("protection.WORLD_MOB_REMOVAL_ENTITIES");
+	}
+	
+	public static List<String> getTownMobRemovalEntities() {
+		if (getDebug()) System.out.println("[Towny] Debug: Reading Town Mob removal entities. ");
+		return getStrArr("protection.TOWN_MOB_REMOVAL_ENTITIES");
 	}
 	
 	public static int getMobRemovalSpeed() {
 		return getInt("protection.MOB_REMOVAL_SPEED");
 	}
 	
-	public static boolean isRemovingMobs() {
-		return getBoolean("protection.MOB_REMOVAL");
+	public static boolean isRemovingWorldMobs() {
+		return getBoolean("protection.MOB_REMOVAL_WORLD");
+	}
+	
+	public static boolean isRemovingTownMobs() {
+		return getBoolean("protection.MOB_REMOVAL_TOWN");
 	}
 	
 	public static int getHealthRegenSpeed() {
@@ -788,6 +797,11 @@ public class TownySettings {
 		config.setProperty(root.toLowerCase(), value);
 		if (getDebug()) System.out.println("[Towny] Debug: Saving config.yml ");
 		config.save();
+	}
+	
+	public static Object getProperty(String root) {
+		return config.getProperty(root.toLowerCase());
+
 	}
 
 	public static double getClaimPrice() {
